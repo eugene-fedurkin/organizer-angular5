@@ -1,0 +1,11 @@
+<div *ngIf="isOpenWindow" class="container" [@listAnimation]="options.length">
+  <ul *ngFor="let option of options">
+    <li
+      class="item"
+      (click)="option === 'Profile'
+        ? openProfile()
+        : option === 'Setting'
+        ? openSetting()
+        : confirmSignOut()">{{ option }}</li>
+  </ul>
+</div>

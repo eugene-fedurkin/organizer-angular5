@@ -1,0 +1,25 @@
+.container {
+  background: #000000;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 52px;
+}
+span {
+  color: #FAEFD4;
+}
+img.user {
+  width: 28px;
+  padding: 10px;
+  padding-right: 0;
+}
+img.expand {
+  width: 14px;
+  padding: 13px;
+  transform: rotateZ(-90deg);
+  transition: transform 0.2s linear;
+  cursor: pointer;
+}
+img.expand.active {
+  transform: rotateZ(0);
+}

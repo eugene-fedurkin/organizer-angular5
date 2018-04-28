@@ -1,0 +1,10 @@
+<div *ngIf="isVisible" class="container" [@fadeAnimation]>
+  <div class="content">
+    <h2>Confirmation</h2>
+    <div class="question">{{ massage }}</div>
+    <div class="btns">
+      <button (click)="cancel()">No</button>
+      <button (click)="execute()">Yes</button>
+    </div>
+  </div>
+</div>

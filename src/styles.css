@@ -1,0 +1,10 @@
+body, ul, li {
+  margin: 0;
+  padding: 0;
+  font-family: 'Quicksand', sans-serif;
+  list-style: none;
+  overflow-x: hidden;
+}
+img {
+  -webkit-user-drag: none;
+}
