@@ -1,12 +1,15 @@
 <section class="container">
   <div class="lists">
     <span>
-      <input [(ngModel)]="title" (keyup.enter)="addList()" id="title" type="text" placeholder="Title of a category" />
-      <label for="title"></label>
-      <img (click)="clear()" src="../../../assets/cancel.svg" alt="close" />
+      <add-input (addEvent)="addList($event)" [message]="'Title of a category'"></add-input>
+      <!-- <input [(ngModel)]="title" (keyup.enter)="addList()" id="title" type="text" placeholder="Title of a category" autocomplete="false" />
+      <label for="title"></label> -->
+      <!-- <img (click)="clear()" src="../../../assets/cancel.svg" alt="close" /> -->
     </span>
-    <div>
-      <list *ngFor="let list of lists" [list]="list"></list>
+    <div *ngFor="let list of lists" @fadeOut>
+      <list class="item" [list]="list" (editList)="editList($event)" (deleteList)="removeList($event)" (openList)="openList($event)"></list>
     </div>
   </div>
 </section>
+
+<router-outlet></router-outlet>

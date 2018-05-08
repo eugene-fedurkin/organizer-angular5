@@ -1,0 +1,13 @@
+<div (click)="openDetails()" class="container" [class.disabled]="item.id < 0">
+  <span>
+    {{item.title}}
+  </span>
+  <!-- <input class="checkbox" type="checkbox" id="box" [checked]="item.completed" (change)="qwe()" />
+  <label for="box"></label> -->
+ 
+  <div class="cntr">
+      <input type="checkbox" id="{{item.id}}" [checked]="item.completed" disabled />
+      <label for="{{item.id}}" class="cbx"></label>
+      <label for="{{item.id}}" class="lbl"></label>
+  </div>
+</div>

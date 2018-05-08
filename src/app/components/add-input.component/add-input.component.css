@@ -1,0 +1,42 @@
+input {
+  font-family: inherit;
+  margin-bottom: 15px;
+  width: 230px;
+  padding: 2px 25px 6px 8px;
+  font-size: 17px;
+  background: none;
+  color: #FAEFD4;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid rgba(0,0,0,0);
+  border-left: 1px solid #FAEFD4;
+}
+input::placeholder {
+  color: #FAEFD4;
+}
+label {
+  position: absolute;
+  bottom: 15px;
+  height: 1px;
+  height: 1px;
+  width: 0px;
+  background-color: #FAEFD4;
+  transition: 0.2s linear;
+}
+input:focus ~ label {
+  width: 100%;
+}
+div {
+  position: relative;
+  align-self: center;
+}
+img {
+  position: absolute;
+  width: 12px;
+  bottom: 24px;
+  right: 8px;
+  cursor: pointer;
+}
+img:active {
+  opacity: 0.6;
+}

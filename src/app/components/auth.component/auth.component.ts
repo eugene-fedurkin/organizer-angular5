@@ -73,22 +73,22 @@ export class Auth extends Base {
   }
 
   ngOnInit() {
-    // this.loader.show();
-    // this.httpService.getCurrentUserVerbose()
-    //   .takeUntil(this.destroy)
-    //   .subscribe(user => {
-    //     this.store.saveUser(user);
-    //     this.router.navigate(['/lists']);
-    //     this.loader.hide();
-    //   },
-    //   error => {
-    //     if (error.status === 401 || error.status === 404) {
-    //       console.log(error.statusText);
-    //       this.loader.hide();
-    //     } else {
-    //       throw new Error(error);
-    //     }
-    //   }
-    // );
+    this.loader.show();
+    this.httpService.getCurrentUserVerbose()
+      .takeUntil(this.destroy)
+      .subscribe(user => {
+        this.store.saveUser(user);
+        this.router.navigate(['/lists']);
+        this.loader.hide();
+      },
+      error => {
+        if (error.status === 401 || error.status === 404) {
+          console.log(error.statusText);
+          this.loader.hide();
+        } else {
+          console.log(error);
+        }
+      }
+    );
   }
 }

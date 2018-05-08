@@ -24,7 +24,7 @@ export class MockUserHttpService implements IUserHttpService {
 
   public getCurrentUserVerbose(): Observable<User> {
 
-    return Observable.from([userMock]).delay(1500);
+    return Observable.from([userMock]).delay(500);
   }
 
   public signOut(): Observable<any> {

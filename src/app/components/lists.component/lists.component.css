@@ -1,8 +1,6 @@
-.container {
-  width: 100%;
-  height: calc(100vh - 52px);
-  background: url('../../../assets/main-bg.jpg');
-  background-position: 50% 50%;
+:host {
+  display: grid;
+  grid-template-columns: 390px auto;
 }
 .lists {
   display: inline-flex;
@@ -42,13 +40,9 @@ label {
 input:focus ~ label {
   width: 100%;
 }
-img {
-  position: absolute;
-  width: 12px;
-  bottom: 25px;
-  right: 8px;
-  cursor: pointer;
-}
-img:active {
-  opacity: 0.6;
+
+
+
+.path {
+  stroke-dasharray: 20;
 }

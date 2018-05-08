@@ -1,0 +1,18 @@
+<div class="container">
+  <div>
+    <div class="head">
+      <h2>
+        {{item?.title}}
+      </h2>
+    </div>
+    <div class="content">
+        <div>
+          {{item?.description}}
+        </div>
+        <div class="state">State: <span>{{item?.completed ? 'done' : 'not done' }}</span></div>
+        <div>{{item?.dueDate}}</div>
+    </div>
+    <button (click)="openEditForm()">Edit item</button>
+  </div>
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,123 @@
+:host {
+  flex-grow: 1;
+}
+.container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  background: rgba(255,255,255,0.15);
+  border-radius: 6px;
+  padding: 10px 15px;
+  color: #FAEFD4;
+  margin: 6px 0px;
+  transition: all 0.2s linear;
+}
+.container.disabled {
+  opacity: 0.3;
+}
+.container.disabled:hover {
+  transform: translateX(0);
+  opacity: 0.3;
+  cursor: default;
+}
+.container:hover {
+  transform: translateX(3px);
+  cursor: pointer;
+}
+/* .checkbox {
+  position: relative;
+  width: 11px;
+  height: 11px;
+  margin-right: 5px;
+  cursor: pointer;
+  appearance: none;
+  outline: 0;
+  justify-self: end;
+}
+.checkbox:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #FAEFD4;
+  transition: all 0.3s ease-in-out;
+}
+
+.checkbox:checked:before {
+  height: 50%;
+  transform: rotate(-45deg);
+  border-top-style: none;
+  border-right-style: none;
+} */
+div.cntr {
+  position: relative;
+  justify-self: end;
+  width: 20px;
+}
+input {
+  display: none;
+}
+.cbx {
+  position: absolute;
+  top: 1px;
+  width: 17px;
+  height: 17px;
+  border: 1px solid #FAEFD4;
+  border-radius: 3px;
+  vertical-align: middle;
+  transition: background-color .1s ease;
+  cursor: pointer;
+}
+.cbx:after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 5px;
+  width: 5px;
+  height: 11px;
+  opacity: 0;
+  transform: rotate(45deg) scale(0);
+  border-right: 2px solid #FAEFD4;
+  border-bottom: 2px solid #FAEFD4;
+  transition: all .3s ease;
+  transition-delay: .15s;
+}
+.lbl {
+  margin-left: 5px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+input:checked ~ .cbx {
+  background: none;
+  animation: jelly .6s ease;
+}
+input:checked ~ .cbx:after {
+  opacity: 1;
+  transform: rotate(45deg) scale(1);
+}
+  
+@keyframes jelly {
+  from {
+    transform: scale(1, 1);
+  }
+  30% {
+    transform: scale(1.25, 0.75);
+  }
+  40% {
+    transform: scale(0.75, 1.25);
+  }
+  50% {
+    transform: scale(1.15, 0.85);
+  }
+  65% {
+    transform: scale(.95, 1.05);
+  }
+  75% {
+    transform: scale(1.05, .95);
+  }
+  to {
+    transform: scale(1, 1);
+  }
+}

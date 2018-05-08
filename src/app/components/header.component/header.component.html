@@ -1,12 +1,15 @@
 <header>
   <div class="container">
-    <span *ngIf="userName !== 'Guest'">
-      {{userName}}
-    </span>
-    <span *ngIf="userName !== 'Guest'">
-      <img class="user" src="../../../assets/user.svg" alt="user" />
-      <img (click)="toggleWindow()"  class="expand" [class.active]="isOpenWindow" src="../../../assets/expand-button.svg" alt="btn" />
-      <setting-window [isOpenWindow]="isOpenWindow" (close)="toggleWindow()"></setting-window>
-    </span>
+    <span class="label">Organizer</span>
+    <div *ngIf="userName" class="userInfo">
+      <span>
+        {{userName}}
+      </span>
+      <span>
+        <img class="user" src="../../../assets/user.svg" alt="user" />
+        <img (click)="toggleWindow()"  class="expand" [class.active]="isOpenWindow" src="../../../assets/expand-button.svg" alt="btn" />
+        <setting-window [isOpenWindow]="isOpenWindow" (close)="toggleWindow()"></setting-window>
+      </span>
+    </div>
   </div>
 </header>

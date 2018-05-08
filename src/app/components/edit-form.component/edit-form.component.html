@@ -1,0 +1,46 @@
+<div class="outside">
+  <div class="container">
+    <h3>{{item?.title}}</h3>
+    <div class="btns">
+      <button (click)="saveChanges()">SAVE CHANGES</button>
+      <button (click)="closeForm()">CLOSE</button>
+    </div>
+    <span class="titleContainer">
+      <input type="text" id="title" [(ngModel)]="itemTitle" placeholder="Title" />
+      <label for="title"></label>
+    </span>
+    <span class="descriptionContainer">
+      <textarea [(ngModel)]="itemDescription" id="description" placeholder="Description"></textarea>
+      <label for="description"></label>
+    </span>
+    <div class="inline-flex">
+      <form #myForm="ngForm" novalidate>
+        <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="model" required></my-date-picker>
+      </form>
+      <input placeholder="Search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="search" #search>
+    </div>
+    <agm-map
+      [styles]="marker.styles"
+      [latitude]="marker.latitude"
+      [longitude]="marker.longitude"
+      [zoom]="marker.zoom"
+      backgroundColor="none"
+      (mapReady)="mapReady($event)"
+      #map
+    >
+      <agm-marker
+        (dragEnd)="dragEnd($event)"
+        [latitude]="marker.latitude"
+        [longitude]="marker.longitude"
+        [iconUrl]="marker.iconUrl"
+        [markerDraggable]="marker.markerDraggable"
+      >
+        <agm-snazzy-info-window [maxWidth]="200" [closeWhenOthersOpen]="true">
+          <ng-template>
+            {{marker.address}}
+          </ng-template>
+        </agm-snazzy-info-window>
+      </agm-marker>
+    </agm-map>
+  </div>
+</div>

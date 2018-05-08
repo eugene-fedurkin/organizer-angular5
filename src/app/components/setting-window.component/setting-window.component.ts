@@ -61,14 +61,14 @@ export class SettingWindow extends Base {
       this.http.signOut()
         .takeUntil(this.destroy)
         .subscribe(resp => {
-          this.store.user = null;
+          this.store.removeUser();
           this.router.navigate(['./auth']);
         },
       error => console.log('Server isnt access right now'));
     };
-    const massage = 'Are you sure that you want to sign out?';
+    const message = 'Are you sure that you want to sign out?';
 
-    this.modal.open(handler, massage);
+    this.modal.open(handler, message);
   }
 
   public closeWindow(): void {

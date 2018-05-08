@@ -1,0 +1,5 @@
+<div>
+  <input [(ngModel)]="title" (keyup.enter)="add()" id="title" type="text" [placeholder]="message" autocomplete="false" />
+  <label for="title"></label>
+  <img (click)="clear()" src="../../../assets/cancel.svg" alt="close" />
+</div>

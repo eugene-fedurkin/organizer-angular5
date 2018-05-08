@@ -26,8 +26,8 @@ export class Modal {
   public get isVisible(): boolean {
     return this.modal.isVisible;
   }
-  public get massage(): string {
-    return this.modal.massage;
+  public get message(): string {
+    return this.modal.message;
   }
 
   constructor(private modal: ModalService) {}

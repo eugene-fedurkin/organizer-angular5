@@ -1,0 +1,6 @@
+<section>
+  <h2>{{ list?.title }}</h2>
+  <add-input (addEvent)="addItem($event)" [message]="'Title of a item'"></add-input>
+  <item *ngFor="let item of list?.items" [item]="item"></item>
+</section>
+<router-outlet></router-outlet>

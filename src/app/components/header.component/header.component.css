@@ -1,12 +1,19 @@
 .container {
   background: #000000;
   display: flex;
-  justify-content: flex-end;
   align-items: center;
   height: 52px;
+  justify-content: space-between;
 }
 span {
   color: #FAEFD4;
+}
+.label {
+  margin: 20px;
+}
+.userInfo {
+  display: flex;
+  align-items: center;
 }
 img.user {
   width: 28px;

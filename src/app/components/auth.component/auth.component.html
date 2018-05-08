@@ -1,9 +1,32 @@
-<div class="container">
-  <div class="form">
-    <h3>{{ authMod }}</h3>
-    <input [(ngModel)]="email" type="text" placeholder="Email" />
-    <input [(ngModel)]="password" type="password" placeholder="Password" />
-    <button (click)="authMod === 'Sign in' ? signIn() : signUp()">Create</button>
-    <button (click)="toggleMod()">{{ authMod === 'Sign in' ? 'Sign in' : 'Sign up'}}</button>
+<div class="outside">
+  <div class="container">
+    <div class="form" [class.flipped]="authMod === 'Sign up'">
+      <figure class="front">
+        <h3>Sign In</h3>
+        <span>
+          <input [(ngModel)]="email" id="SignInEmail" type="text" placeholder="Email" autocomplete="false" />
+          <label for="SignInEmail"></label>
+        </span>
+        <span>
+          <input [(ngModel)]="password" id="SignInPassword" type="password" placeholder="Password" autocomplete="false" />
+          <label for="SignInPassword"></label>
+        </span>
+        <button (click)="signIn()">Sign in</button>
+        <div class="toggler">New to Organizer? <span (click)="toggleMod()">Sign up</span></div>
+      </figure>
+      <figure class="back">
+        <h3>Sign up</h3>
+        <span>
+          <input [(ngModel)]="email" id="SignUpEmail" type="text" placeholder="Email" autocomplete="false" />
+          <label for="SignUpEmail"></label>
+        </span>
+        <span>
+          <input [(ngModel)]="password" id="SignUpPassword" type="password" placeholder="Password" autocomplete="false" />
+          <label for="SignUpPassword"></label>
+        </span>
+        <button (click)="signUp()">Create an account</button>
+        <div class="toggler">Are you have an account? <span (click)="toggleMod()">Sign in</span></div>
+      </figure>
+    </div>
   </div>
 </div>

@@ -8,16 +8,16 @@ export class ModalService {
   public isVisible: boolean = false;
 
   private handler: Handler = () => {};
-  public massage: string = '';
+  public message: string = '';
 
   public execute(): void {
     this.handler();
     this.cancel();
   }
 
-  public open(handler: Handler, massage: string): void {
+  public open(handler: Handler, message: string): void {
     this.handler = handler;
-    this.massage = massage;
+    this.message = message;
     this.isVisible = true;
   }
 

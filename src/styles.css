@@ -1,3 +1,9 @@
+body {
+  /* background: url('./assets/main-bg.jpg'); */
+  background: rgba(0,0,0,0.8);
+  background-position: 50% 50%;
+  height: -webkit-fill-available;
+}
 body, ul, li {
   margin: 0;
   padding: 0;
@@ -7,4 +13,69 @@ body, ul, li {
 }
 img {
   -webkit-user-drag: none;
+}
+.pac-item {
+  background: blue
+}
+/*Calendar*/
+my-date-picker > div {
+  border: none!important;
+}
+my-date-picker > div > div > div > button {
+  color :#FAEFD4!important;
+  background: none!important;
+}
+my-date-picker > div > div > input {
+  background: black!important;
+  color: #FAEFD4!important;
+  height: 34px!important;
+  font-size: 17px!important;
+  border-left: 1px solid #FAEFD4!important;
+  border-radius: 0!important;
+  font-family: 'Quicksand', sans-serif!important;
+}
+.weekdaytitle {
+  color: #FAEFD4!important;
+  border-bottom: 1px solid #FAEFD4!important;
+}
+.currmonth {
+  background-color: rgba(0,0,0,0.4)!important;
+}
+.daycell {
+  color: #FAEFD4!important;
+}
+.headerbtncell, .headerbtn, .selectorarrow, .weekdaytitle, .yearlabel, .headertodaybtn, .monthlabel {
+  background: none!important;
+}
+.icon-mydpright, .icon-mydpleft, .yearlabel, .headertodaybtn, .icon-mydptoday, .monthlabel, .selectorarrow:after {
+  color: #FAEFD4!important;
+}
+.header, .caltable {
+  background: rgba(0,0,0,0.6)!important;
+}
+.pac-container {
+  background: rgba(0,0,0,0.65);
+  border: 1px solid #FAEFD4;
+}
+.pac-item {
+  background: none;
+}
+.pac-item {
+  font-family: 'Quicksand', sans-serif;
+  color: #FAEFD4!important;
+}
+.pac-item:hover {
+  background: rgba(0,0,0,1);
+  cursor: pointer;
+}
+.pac-item-query {
+  font-family: 'Quicksand', sans-serif;
+  color: #FAEFD4!important;
+  color: rgb(230, 229, 227)!important;
+}
+.pack-matched {
+  font-weight: 900;
+}
+.ng-touched.ng-dirty.invaliddate {
+  color: red!important;
 }
