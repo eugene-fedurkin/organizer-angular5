@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { IUserHttpService } from '../../interfaces/i.user.http';
 
-import { Credential } from '../../models/credential.model';
+import { Credentials } from '../../models/credential.model';
 import { User } from '../../models/user.model';
 // import { RequestOptions } from '@angular/http';
 
@@ -18,11 +18,11 @@ export class HttpService implements IUserHttpService {
 
   constructor(private http: HttpClient) {}
 
-  public registerUser(credential: Credential): Observable<User> {
+  public registerUser(credential: Credentials): Observable<User> {
     return this.http.post<User>(`${this.url}/users`, credential, this.options);
   }
 
-  public signIn(credential: Credential): Observable<any> {
+  public signIn(credential: Credentials): Observable<any> {
     return this.http.post(`${this.url}/users/signin`, credential, this.options);
   }
 

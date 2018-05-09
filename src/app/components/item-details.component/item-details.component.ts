@@ -12,7 +12,7 @@ import { List } from '../../models/list.model';
   templateUrl: './item-details.component.html',
   styleUrls: ['./item-details.component.css']
 })
-export class ItemDetails extends Base implements OnInit, OnDestroy {
+export class ItemDetailsComponent extends Base implements OnInit, OnDestroy {
 
   public item: Item;
   public subscriptionToItem: Subscription;
@@ -20,7 +20,7 @@ export class ItemDetails extends Base implements OnInit, OnDestroy {
   private listId: number;
   private itemId: number;
 
-  constructor(
+  public constructor(
     private route: ActivatedRoute,
     private store: Store,
     private router: Router,
@@ -32,15 +32,15 @@ export class ItemDetails extends Base implements OnInit, OnDestroy {
   }
 
   public openEditForm(): void {
-    this.router.navigate([`lists/${this.listId}/${this.itemId}/details/edit-form`]);
+    this.router.navigate([`lists/${this.listId}/${this.itemId}/details/edit-form`]); // pass through ','
   }
 
   ngOnInit() {
     this.subscriptionToList = this.route.parent.params.subscribe(params => this.listId = +params.listId );
     this.subscriptionToItem = this.route.params.subscribe(params => {
       this.itemId = +params.itemId;
-      this.store.cast
-      .takeUntil(this.destroy)
+      this.store.state$
+      .takeUntil(this.componentDestroyed)
       .subscribe(user => {
         if (user) {
           this.findItem(user.lists, this.listId, this.itemId);

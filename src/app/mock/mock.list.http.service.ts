@@ -9,13 +9,13 @@ import 'rxjs/add/operator/delay';
 
 export class MockListHttpService implements IListHttpService {
   private id = 0;
-  
+
   public createList(list: ListCreate): Observable<List> {
     const newList = new List(this.id++, list.title, []);
-    return Observable.from([newList]).delay(200);
+    return Observable.from([newList]).delay(2000);
     // return Observable.interval(2000).map(list => {throw new ErrorObservable('qwe')});
   }
-  
+
   public removeList(id: number): Observable<List> {
     const list = new List(id, 'EXAMPLE', []);
     return Observable.from([list]);

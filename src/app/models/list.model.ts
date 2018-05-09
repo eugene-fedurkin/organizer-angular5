@@ -1,7 +1,7 @@
 import { Item } from './item.model';
 
 export class List {
-  constructor(
+  public constructor(
     public id: number,
     public title: string,
     public items: Item[],

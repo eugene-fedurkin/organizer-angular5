@@ -1,6 +1,5 @@
+import { animate, query, style, transition, trigger } from '@angular/animations';
 import { Component } from '@angular/core';
-
-import { trigger, style, animate, transition, query } from '@angular/animations';
 
 import { ModalService } from '../../services/modal.service';
 
@@ -21,7 +20,7 @@ import { ModalService } from '../../services/modal.service';
     ])
   ]
 })
-export class Modal {
+export class ModalComponent {
 
   public get isVisible(): boolean {
     return this.modal.isVisible;
@@ -30,10 +29,10 @@ export class Modal {
     return this.modal.message;
   }
 
-  constructor(private modal: ModalService) {}
+  public constructor(private modal: ModalService) {}
 
   public cancel(): void {
-    this.modal.cancel();
+    this.modal.close();
   }
 
   public execute(): void {

@@ -4,11 +4,11 @@
       <figure class="front">
         <h3>Sign In</h3>
         <span>
-          <input [(ngModel)]="email" id="SignInEmail" type="text" placeholder="Email" autocomplete="false" />
+          <input [(ngModel)]="credentials.email" id="SignInEmail" type="text" placeholder="Email" autocomplete="false" />
           <label for="SignInEmail"></label>
         </span>
         <span>
-          <input [(ngModel)]="password" id="SignInPassword" type="password" placeholder="Password" autocomplete="false" />
+          <input [(ngModel)]="credentials.password" id="SignInPassword" type="password" placeholder="Password" autocomplete="false" />
           <label for="SignInPassword"></label>
         </span>
         <button (click)="signIn()">Sign in</button>
@@ -17,11 +17,11 @@
       <figure class="back">
         <h3>Sign up</h3>
         <span>
-          <input [(ngModel)]="email" id="SignUpEmail" type="text" placeholder="Email" autocomplete="false" />
+          <input [(ngModel)]="credentials.email" id="SignUpEmail" type="text" placeholder="Email" autocomplete="false" />
           <label for="SignUpEmail"></label>
         </span>
         <span>
-          <input [(ngModel)]="password" id="SignUpPassword" type="password" placeholder="Password" autocomplete="false" />
+          <input [(ngModel)]="credentials.password" id="SignUpPassword" type="password" placeholder="Password" autocomplete="false" />
           <label for="SignUpPassword"></label>
         </span>
         <button (click)="signUp()">Create an account</button>

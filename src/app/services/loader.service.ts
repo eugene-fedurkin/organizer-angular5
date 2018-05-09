@@ -3,17 +3,17 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class LoaderService {
 
-  private countToShow: number = 0;
+  private showCounter: number = 0;
 
   public get isVisible(): boolean {
-    return !!this.countToShow;
+    return !!this.showCounter;
   }
 
   public show(): void {
-    this.countToShow++;
+    this.showCounter++;
   }
 
   public hide(): void {
-    if (this.countToShow) this.countToShow--;
+    if (this.showCounter) this.showCounter--;
   }
 }

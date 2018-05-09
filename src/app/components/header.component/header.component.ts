@@ -8,20 +8,20 @@ import { Base } from '../base.component';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class Header extends Base implements OnInit {
+export class HeaderComponent extends Base implements OnInit {
 
   public isOpenWindow: boolean = false;
   public userName: string = '';
 
-  constructor(private store: Store) { super(); }
+  public constructor(private store: Store) { super(); }
 
   public toggleWindow(): void {
     this.isOpenWindow = !this.isOpenWindow;
   }
 
   ngOnInit() {
-    this.store.cast
-    .takeUntil(this.destroy)
+    this.store.state$
+    .takeUntil(this.componentDestroyed)
     .subscribe(user => {
       if (user) {
         this.userName = user.email;

@@ -5,23 +5,31 @@ type Handler = () => void;
 @Injectable()
 export class ModalService {
 
-  public isVisible: boolean = false;
+  private messageText: string = '';
+  private visible: boolean = false;
 
   private handler: Handler = () => {};
-  public message: string = '';
+
+  public get message(): string {
+    return this.messageText;
+  }
+
+  public get isVisible(): boolean {
+    return this.visible;
+  }
 
   public execute(): void {
     this.handler();
-    this.cancel();
+    this.close();
   }
 
   public open(handler: Handler, message: string): void {
     this.handler = handler;
-    this.message = message;
-    this.isVisible = true;
+    this.messageText = message;
+    this.visible = true;
   }
 
-  public cancel(): void {
-    this.isVisible = false;
+  public close(): void {
+    this.visible = false;
   }
 }

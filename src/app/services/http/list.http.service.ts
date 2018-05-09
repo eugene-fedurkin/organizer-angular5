@@ -1,31 +1,30 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { IListHttpService } from '../../interfaces/i.list.http';
-
-import { HttpClient } from '@angular/common/http';
-import { List } from '../../models/list.model';
 import { ListCreate } from '../../models/list-create.model';
+import { List } from '../../models/list.model';
 
 @Injectable()
 export class ListHttpService implements IListHttpService {
 
-  private readonly url = 'https://organizerapi.azurewebsites.net';
-  private readonly options = { // TODO: RequestOption is doesnt work
+  private readonly listsUrl = 'https://organizerapi.azurewebsites.net/lists';
+  private readonly options = {
     withCredentials: true
   };
-  
-  constructor(private http: HttpClient) {}
-  
+
+  public constructor(private readonly http: HttpClient) {}
+
   public createList(list: ListCreate): Observable<List> {
-    return this.http.post<List>(`${this.url}/lists`, list, this.options);
+    return this.http.post<List>(this.listsUrl, list, this.options);
   }
-  
+
   public removeList(id: number): Observable<List> {
-    return this.http.delete<List>(`${this.url}/lists/${id}`, this.options);
+    return this.http.delete<List>(`${this.listsUrl}/${id}`, this.options);
   }
 
   public editList(list: ListCreate, id: number): Observable<List> {
-    return this.http.put<List>(`${this.url}/lists/${id}`, list, this.options);
+    return this.http.put<List>(`${this.listsUrl}/${id}`, list, this.options);
   }
 }

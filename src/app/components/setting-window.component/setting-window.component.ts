@@ -1,13 +1,11 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { trigger, style, animate, transition, query, stagger } from '@angular/animations';
-
+import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { ModalService } from '../../services/modal.service';
 import { IUserHttpService } from '../../interfaces/i.user.http';
-import { Base } from '../base.component';
+import { ModalService } from '../../services/modal.service';
 import { Store } from '../../services/store.service';
-import { User } from '../../models/user.model';
+import { Base } from '../base.component';
 
 @Component({
   selector: 'setting-window',
@@ -30,13 +28,13 @@ import { User } from '../../models/user.model';
     ])
   ]
 })
-export class SettingWindow extends Base {
+export class SettingWindowComponent extends Base {
 
   @Input() public isOpenWindow;
   @Output() public close = new EventEmitter();
   public options: string[] = ['Profile', 'Setting', 'Sign out'];
 
-  constructor(
+  public constructor(
     private modal: ModalService,
     private router: Router,
     private http: IUserHttpService,
@@ -59,7 +57,7 @@ export class SettingWindow extends Base {
     this.closeWindow();
     const handler = () => {
       this.http.signOut()
-        .takeUntil(this.destroy)
+        .takeUntil(this.componentDestroyed)
         .subscribe(resp => {
           this.store.removeUser();
           this.router.navigate(['./auth']);

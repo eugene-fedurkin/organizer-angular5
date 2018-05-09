@@ -10,15 +10,15 @@ import { Item as ItemModel } from '../../models/item.model';
   templateUrl: './item.component.html',
   styleUrls: ['./item.component.css']
 })
-export class Item {
+export class ItemComponent {
 
   @Input() public item: ItemModel;
   public subscription: Subscription;
-  constructor(private router: Router) {
+  public constructor(private router: Router) {
   }
 
   public openDetails() {
-    this.router.navigate([`lists/${this.item.listId}/${this.item.id}/details`]);
+    this.router.navigate([`lists/${this.item.listId}/${this.item.id}/details`]); // pass through ','
   }
 
   qwe() {

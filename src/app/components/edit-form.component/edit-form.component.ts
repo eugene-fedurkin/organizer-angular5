@@ -1,29 +1,25 @@
-import { Component, OnInit, OnDestroy, NgZone, ViewChild,
-ElementRef } from '@angular/core';
-
-import { Subscription } from 'rxjs/Subscription';
-
-import { IMyDpOptions } from 'mydatepicker';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Store } from '../../services/store.service';
-import { Base } from '../base.component';
-import { User } from '../../models/user.model';
-import { Item } from '../../models/item.model';
-
-import { MapsAPILoader, AgmMap } from '@agm/core';
-
 import 'snazzy-info-window/dist/snazzy-info-window.min.css';
 
+import { MapsAPILoader } from '@agm/core';
+import { Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { IMyDpOptions } from 'mydatepicker';
+import { Subscription } from 'rxjs/Subscription';
+
+import { Item } from '../../models/item.model';
+import { User } from '../../models/user.model';
+import { Store } from '../../services/store.service';
+import { Base } from '../base.component';
 import { marker } from './marker-config';
 
 declare var google: any;
 
 @Component({
-  selector: 'edit-form',
+  selector: 'edit-form', // TODO: change all selectors to app-*
   templateUrl: './edit-form.component.html',
   styleUrls: ['./edit-form.component.css']
 })
-export class EditForm extends Base implements OnInit, OnDestroy {
+export class EditFormComponent extends Base implements OnInit, OnDestroy {
 
   @ViewChild('search') public search: ElementRef;
   @ViewChild('map') public map;
@@ -44,7 +40,7 @@ export class EditForm extends Base implements OnInit, OnDestroy {
 
   public marker = marker;
 
-  constructor(
+  public constructor(
     private route: ActivatedRoute,
     private router: Router,
     private store: Store,
@@ -64,7 +60,7 @@ export class EditForm extends Base implements OnInit, OnDestroy {
     const request = { latLng: latlng };
 
     geocoder.geocode(request, (results, status) => {
-      if (status == google.maps.GeocoderStatus.OK) {
+      if (status === google.maps.GeocoderStatus.OK) {
         if (results[0] != null) {
           this.marker.address = results[0].formatted_address;
         } else {
@@ -82,7 +78,7 @@ export class EditForm extends Base implements OnInit, OnDestroy {
   }
 
   public closeForm(): void {
-    this.router.navigate([`lists/${this.listId}/${this.itemId}/details`]);
+    this.router.navigate([`lists/${this.listId}/${this.itemId}/details`]); // pass through ','
   }
 
   private initializeItem(user: User): void {
@@ -121,13 +117,13 @@ export class EditForm extends Base implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.itemIdSubscription = this.route.parent.params
-      .takeUntil(this.destroy)
+      .takeUntil(this.componentDestroyed)
       .subscribe(param => this.itemId = +param.itemId);
     this.listIdSubscription = this.route.parent.parent.params
-      .takeUntil(this.destroy)
+      .takeUntil(this.componentDestroyed)
       .subscribe(param => this.listId = +param.listId);
-    this.store.cast
-      .takeUntil(this.destroy)
+    this.store.state$
+      .takeUntil(this.componentDestroyed)
       .subscribe(user => {
         if (user) {
           this.initializeItem(user);
@@ -138,12 +134,12 @@ export class EditForm extends Base implements OnInit, OnDestroy {
       .then(() => {
         this.autocomplete = new google.maps.places.Autocomplete(this.search.nativeElement, { types: ['address'] });
 
-        this.autocomplete.addListener('place_changed', () => this.changeMapLocation())
+        this.autocomplete.addListener('place_changed', () => this.changeMapLocation());
     });
   }
 
   OnDestroy() {
-    this.destroy.next();
-    this.autocomplete.removeEventListener('place_changed', this.changeMapLocation)
+    this.componentDestroyed.next();
+    this.autocomplete.removeEventListener('place_changed', this.changeMapLocation);
   }
 }

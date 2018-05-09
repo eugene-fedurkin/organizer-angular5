@@ -18,12 +18,12 @@ import { LoaderService } from '../../services/loader.service';
     )
   ],
 })
-export class Loader {
+export class LoaderComponent {
 
   public get isVisible(): boolean {
     return this.loader.isVisible;
   }
 
-  constructor(private loader: LoaderService) {}
+  public constructor(private loader: LoaderService) {}
 
 }

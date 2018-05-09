@@ -1,13 +1,11 @@
-import { Component, Input, Output, EventEmitter, ElementRef, ViewChild, OnInit } from '@angular/core';
-
-import { trigger, style, animate, transition } from '@angular/animations';
-
-import { List as ListModel } from '../../models/list.model';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 
 import { IListHttpService } from '../../interfaces/i.list.http';
-import { Base } from '../base.component';
 import { ListCreate } from '../../models/list-create.model';
+import { List as ListModel } from '../../models/list.model';
 import { ModalService } from '../../services/modal.service';
+import { Base } from '../base.component';
 
 @Component({
   selector: 'list',
@@ -22,7 +20,7 @@ import { ModalService } from '../../services/modal.service';
     ])
   ]
 })
-export class List extends Base implements OnInit {
+export class ListComponent extends Base implements OnInit {
 
   @Input() public list: ListModel;
   @ViewChild('nameCategory') nameCategory: ElementRef;
@@ -30,15 +28,15 @@ export class List extends Base implements OnInit {
   @Output() public editList = new EventEmitter();
   @Output() public openList = new EventEmitter();
   public isEditMod: boolean = false;
-  private titleToEdit: string = '';
+  public titleToEdit: string = '';
 
-  constructor(private listHttp: IListHttpService, private modal: ModalService) { super(); }
+  public constructor(private listHttp: IListHttpService, private modal: ModalService) { super(); }
 
   public removeList(): void {
     if (this.list.id >= 0) {
       const handler = () => {
         this.listHttp.removeList(this.list.id)
-        .takeUntil(this.destroy)
+        .takeUntil(this.componentDestroyed)
         .subscribe(
           list => this.deleteList.emit(list.id),
           error => console.log(error)
@@ -69,8 +67,8 @@ export class List extends Base implements OnInit {
     list.title = this.titleToEdit;
 
     this.listHttp.editList(list, this.list.id)
-    .takeUntil(this.destroy)
-    .subscribe(list => this.editList.emit(list));
+    .takeUntil(this.componentDestroyed)
+    .subscribe(l => this.editList.emit(l));
   }
 
   public cancelEdit(): void {

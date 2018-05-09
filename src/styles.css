@@ -2,7 +2,7 @@ body {
   /* background: url('./assets/main-bg.jpg'); */
   background: rgba(0,0,0,0.8);
   background-position: 50% 50%;
-  height: -webkit-fill-available;
+  height: -webkit-fill-available; /* TODO: replace with -webkit-stretch */
 }
 body, ul, li {
   margin: 0;

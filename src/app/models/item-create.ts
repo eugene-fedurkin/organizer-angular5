@@ -1,5 +1,5 @@
 export class ItemCreate {
-  constructor(
+  public constructor(
     public title: string,
     public listId: number,
   ) {}

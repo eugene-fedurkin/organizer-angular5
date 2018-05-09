@@ -1,58 +1,52 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { AgmCoreModule, GoogleMapsAPIWrapper, MarkerManager } from '@agm/core';
+import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AppRoutingModule } from './app.routing.module';
+import { MyDatePickerModule } from 'mydatepicker';
 
 import { AppComponent } from './app.component';
-import { Auth } from './components/auth.component/auth.component';
-import { Lists } from './components/lists.component/lists.component';
-import { Loader } from './components/loader.component/loader.component';
-import { List } from './components/list.component/list.component';
-import { Header } from './components/header.component/header.component';
-import { SettingWindow } from './components/setting-window.component/setting-window.component';
-import { Modal } from './components/modal.component/modal.component';
-
-import { LoaderService } from './services/loader.service';
-import { Store } from './services/store.service';
-import { UserHttpService } from './services/http/user.http.service';
-import { IUserHttpService } from './interfaces/i.user.http';
-import { MockUserHttpService } from './mock/mock.user.http.service';
-import { ModalService } from './services/modal.service';
-import { IListHttpService } from './interfaces/i.list.http';
-import { ListHttpService } from './services/http/list.http.service';
-import { MockListHttpService } from './mock/mock.list.http.service';
-import { Items } from './components/items.component/items.component';
-import { Item } from './components/item.component/item.component';
-import { ItemDetails } from './components/item-details.component/item-details.component';
-import { AddInput } from './components/add-input.component/add-input.component';
-import { Queue } from './services/queue.service';
+import { AppRoutingModule } from './app.routing.module';
+import { AddInputComponent } from './components/add-input.component/add-input.component';
+import { AuthComponent } from './components/auth.component/auth.component';
+import { EditFormComponent } from './components/edit-form.component/edit-form.component';
+import { HeaderComponent } from './components/header.component/header.component';
+import { ItemDetailsComponent } from './components/item-details.component/item-details.component';
+import { ItemComponent } from './components/item.component/item.component';
+import { ItemsComponent } from './components/items.component/items.component';
+import { ListComponent } from './components/list.component/list.component';
+import { ListsComponent } from './components/lists.component/lists.component';
+import { LoaderComponent } from './components/loader.component/loader.component';
+import { ModalComponent } from './components/modal.component/modal.component';
+import { SettingWindowComponent } from './components/setting-window.component/setting-window.component';
 import { IItemHttpService } from './interfaces/i.item.http';
-import { ItemHttpService } from './services/http/item.http.service';
+import { IListHttpService } from './interfaces/i.list.http';
+import { IUserHttpService } from './interfaces/i.user.http';
 import { MockItemHttpService } from './mock/mock.item.http.service';
-import { MyDatePickerModule } from 'mydatepicker';
-import { EditForm } from './components/edit-form.component/edit-form.component';
-
-import { AgmCoreModule, MarkerManager, GoogleMapsAPIWrapper } from '@agm/core';
-
-import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+import { MockListHttpService } from './mock/mock.list.http.service';
+import { MockUserHttpService } from './mock/mock.user.http.service';
+import { LoaderService } from './services/loader.service';
+import { ModalService } from './services/modal.service';
+import { UnsavedEntitiesFactory } from './services/queue.service';
+import { Store } from './services/store.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    Auth,
-    Lists,
-    Loader,
-    List,
-    Header,
-    SettingWindow,
-    Modal,
-    Items,
-    Item,
-    ItemDetails,
-    AddInput,
-    EditForm
+    AuthComponent,
+    ListsComponent,
+    LoaderComponent,
+    ListComponent,
+    HeaderComponent,
+    SettingWindowComponent,
+    ModalComponent,
+    ItemsComponent,
+    ItemComponent,
+    ItemDetailsComponent,
+    AddInputComponent,
+    EditFormComponent
   ],
   imports: [
     BrowserModule,
@@ -72,7 +66,7 @@ import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
     Store,
     LoaderService,
     ModalService,
-    Queue,
+    UnsavedEntitiesFactory,
     MarkerManager,
     GoogleMapsAPIWrapper,
     { provide: IUserHttpService, useClass: MockUserHttpService }, // mock: MockUserHttpService, original: UserHttpService

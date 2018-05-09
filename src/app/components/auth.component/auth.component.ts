@@ -1,69 +1,63 @@
-import { Component, OnInit } from '@angular/core';
 import 'rxjs/add/operator/takeUntil';
 
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { IUserHttpService } from '../../interfaces/i.user.http';
-import { Store } from '../../services/store.service';
+import { Credentials } from '../../models/credential.model';
 import { LoaderService } from '../../services/loader.service';
-
-import { Credential } from '../../models/credential.model';
+import { Store } from '../../services/store.service';
 import { Base } from '../base.component';
 
 @Component({
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css'],
 })
-export class Auth extends Base {
-  public email: string = '';
-  public password: string = '';
+export class AuthComponent extends Base implements OnInit {
+
+  public credentials = new Credentials();
   public authMod: string = 'Sign in';
 
-  constructor(
-    private httpService: IUserHttpService,
-    private store: Store,
-    private loader: LoaderService,
-    private router: Router,
+  public constructor(
+    private readonly httpService: IUserHttpService,
+    private readonly store: Store,
+    private readonly loader: LoaderService,
+    private readonly router: Router,
   ) {
     super();
   }
 
   public signUp(): void {
     this.loader.show();
-    const credential: Credential = {
-      email: this.email,
-      password: this.password,
-    }
 
-    this.httpService.registerUser(credential)
-      .takeUntil(this.destroy)
+    this.httpService.registerUser(this.credentials)
+      .takeUntil(this.componentDestroyed)
       .subscribe(user => {
-        this.store.saveUser(user);
-        this.router.navigate(['/lists']);
-        this.loader.hide();
-      },
-        error => {throw Error(error)}
+          this.store.saveUser(user);
+          this.router.navigate(['/lists']);
+        },
+        error => { throw Error(error); },
+        () => this.loader.hide()
       );
   }
 
   public signIn(): void {
     this.loader.show();
-    const credential: Credential = {
-      email: this.email,
-      password: this.password,
-    }
 
-    this.httpService.signIn(credential)
-      .takeUntil(this.destroy)
+    this.httpService.signIn(this.credentials)
+      .takeUntil(this.componentDestroyed)
       .subscribe(resp => {
         this.httpService.getCurrentUserVerbose()
-          .takeUntil(this.destroy)
+          .takeUntil(this.componentDestroyed)
           .subscribe(user => this.store.saveUser(user));
-          this.router.navigate(['/lists']);
-          this.loader.hide();
+        this.router.navigate(['/lists']);
       },
-        error => console.log(error)
-      );
+      error => {
+        console.log(error); // TODO: notify user
+        this.credentials.password = '';
+      },
+      () => this.loader.hide()
+    );
   }
 
   public toggleMod(): void {
@@ -72,23 +66,16 @@ export class Auth extends Base {
       : 'Sign in';
   }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.loader.show();
     this.httpService.getCurrentUserVerbose()
-      .takeUntil(this.destroy)
+      .takeUntil(this.componentDestroyed)
       .subscribe(user => {
-        this.store.saveUser(user);
-        this.router.navigate(['/lists']);
-        this.loader.hide();
-      },
-      error => {
-        if (error.status === 401 || error.status === 404) {
-          console.log(error.statusText);
-          this.loader.hide();
-        } else {
-          console.log(error);
-        }
-      }
+          this.store.saveUser(user);
+          this.router.navigate(['/lists']);
+        },
+        error => {},
+        () => this.loader.hide()
     );
   }
 }

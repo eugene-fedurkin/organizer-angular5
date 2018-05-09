@@ -2,7 +2,7 @@ import { Marker } from './marker.model';
 
 
 export class Item {
-  constructor(
+  public constructor(
     public id: number,
     public title: string,
     public description?: string,

@@ -5,7 +5,7 @@ import { Store } from '../../services/store.service';
 import { Base } from '../base.component';
 import { List } from '../../models/list.model';
 import { Item } from '../../models/item.model';
-import { Queue } from '../../services/queue.service';
+import { UnsavedEntitiesFactory } from '../../services/queue.service';
 import { ItemCreate } from '../../models/item-create';
 import { IItemHttpService } from '../../interfaces/i.item.http';
 
@@ -15,16 +15,16 @@ import { IItemHttpService } from '../../interfaces/i.item.http';
   templateUrl: './items.component.html',
   styleUrls: ['./items.component.css']
 })
-export class Items extends Base implements OnInit, OnDestroy {
+export class ItemsComponent extends Base implements OnInit, OnDestroy {
 
   public subscription: Subscription;
   public list: List;
 
-  constructor(
+  public constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private store: Store,
-    private queue: Queue,
+    private queue: UnsavedEntitiesFactory,
     private http: IItemHttpService
   ) { super(); }
 
@@ -38,16 +38,17 @@ export class Items extends Base implements OnInit, OnDestroy {
 
   public addItem(title: string): void {
     const itemCreate = new ItemCreate(title, this.list.id);
-    const item = this.queue.saveItem(itemCreate);
+    const item = this.queue.createItem(itemCreate);
+    this.store.saveItem(item);
 
     this.http.createItem(itemCreate)
-    .takeUntil(this.destroy)
+    .takeUntil(this.componentDestroyed)
     .subscribe(newItem => this.store.updateItem(newItem, item.id))
   }
 
   ngOnInit() {
-    this.store.cast
-    .takeUntil(this.destroy)
+    this.store.state$
+    .takeUntil(this.componentDestroyed)
     .subscribe(user => {
       if (user && user.lists.length) {
         this.subscription = this.activatedRoute.params.subscribe(param => this.initializeItems(user.lists, param.listId));

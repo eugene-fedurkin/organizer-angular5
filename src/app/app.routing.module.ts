@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { Auth } from './components/auth.component/auth.component';
-import { Lists } from './components/lists.component/lists.component';
-import { Items } from './components/items.component/items.component';
-import { ItemDetails } from './components/item-details.component/item-details.component';
-import { EditForm } from './components/edit-form.component/edit-form.component';
+import { AuthComponent } from './components/auth.component/auth.component';
+import { EditFormComponent } from './components/edit-form.component/edit-form.component';
+import { ItemDetailsComponent } from './components/item-details.component/item-details.component';
+import { ItemsComponent } from './components/items.component/items.component';
+import { ListsComponent } from './components/lists.component/lists.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/auth', pathMatch: 'full' },
-  { path: 'auth', component: Auth },
-  { path: 'lists', component: Lists, children: [
-    { path: ':listId', component: Items, children: [
-      { path: ':itemId/details', component: ItemDetails, children: [
-        { path: 'edit-form', component: EditForm },
+  { path: 'auth', component: AuthComponent },
+  { path: 'lists', component: ListsComponent, children: [
+    { path: ':listId', component: ItemsComponent, children: [
+      { path: ':itemId/details', component: ItemDetailsComponent, children: [
+        { path: 'edit-form', component: EditFormComponent },
       ] },
     ] },
   ] },

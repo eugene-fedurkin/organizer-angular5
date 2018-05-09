@@ -1,12 +1,12 @@
-import { Component, OnDestroy } from '@angular/core';
+import { OnDestroy } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
 
-import { Subject } from 'rxjs';
+export class Base implements OnDestroy {
 
-export class Base {
+  protected readonly componentDestroyed: Subject<void> = new Subject<void>();
 
-  protected destroy: Subject<void> = new Subject<void>();
-
-  ngOnDestroy(): void {
-    this.destroy.next();
+  public ngOnDestroy(): void {
+    this.componentDestroyed.next();
+    this.componentDestroyed.complete();
   }
 }
