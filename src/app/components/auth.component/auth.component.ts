@@ -10,6 +10,7 @@ import { Store } from '../../services/store.service';
 import { Base } from '../base.component';
 
 @Component({
+  selector: 'app-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css'],
 })

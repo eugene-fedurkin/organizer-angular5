@@ -1,6 +1,6 @@
 :host {
   display: grid;
-  grid-template-columns: 390px auto;
+  grid-template-columns: 390px calc(100% - 390px);
 }
 .lists {
   display: inline-flex;

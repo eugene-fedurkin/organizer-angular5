@@ -11,7 +11,7 @@ import { IItemHttpService } from '../../interfaces/i.item.http';
 
 
 @Component({
-  selector: 'items',
+  selector: 'app-items',
   templateUrl: './items.component.html',
   styleUrls: ['./items.component.css']
 })
@@ -43,7 +43,7 @@ export class ItemsComponent extends Base implements OnInit, OnDestroy {
 
     this.http.createItem(itemCreate)
     .takeUntil(this.componentDestroyed)
-    .subscribe(newItem => this.store.updateItem(newItem, item.id))
+    .subscribe(newItem => this.store.updateItem(newItem, item.id));
   }
 
   ngOnInit() {

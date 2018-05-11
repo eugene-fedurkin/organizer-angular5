@@ -8,7 +8,7 @@
       <span>
         <img class="user" src="../../../assets/user.svg" alt="user" />
         <img (click)="toggleWindow()"  class="expand" [class.active]="isOpenWindow" src="../../../assets/expand-button.svg" alt="btn" />
-        <setting-window [isOpenWindow]="isOpenWindow" (close)="toggleWindow()"></setting-window>
+        <app-setting-window [isOpenWindow]="isOpenWindow" (close)="toggleWindow()"></app-setting-window>
       </span>
     </div>
   </div>

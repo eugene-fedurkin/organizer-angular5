@@ -8,7 +8,7 @@ import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import 'rxjs/add/operator/delay';
 
 export class MockListHttpService implements IListHttpService {
-  private id = 0;
+  private id = 2000;
 
   public createList(list: ListCreate): Observable<List> {
     const newList = new List(this.id++, list.title, []);

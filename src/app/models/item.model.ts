@@ -7,7 +7,7 @@ export class Item {
     public title: string,
     public description?: string,
     public completed?: boolean,
-    public dueDate?: string,
+    public dueDate?: Date,
     public listId?: number,
     public marker?: Marker,
   ) {}

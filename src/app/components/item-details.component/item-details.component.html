@@ -1,18 +1,25 @@
-<div class="container">
+<div class="container" *ngIf="item">
   <div>
     <div class="head">
       <h2>
-        {{item?.title}}
+        {{ item.title }}
       </h2>
     </div>
     <div class="content">
         <div>
-          {{item?.description}}
+          {{ item.description }}
         </div>
-        <div class="state">State: <span>{{item?.completed ? 'done' : 'not done' }}</span></div>
-        <div>{{item?.dueDate}}</div>
+        <div>{{ item.marker?.address || 'You dont select an address' }}</div>
+        <div class="state">State: <span>{{ item.completed ? 'done' : 'not done' }}</span></div>
+        <div class="cntr">
+          <input type="checkbox" id="item" [checked]="item.completed" disabled />
+          <label for="item" class="cbx"></label>
+          <label for="item" class="lbl"></label>
+        </div>
+        <div>{{ item?.dueDate | date }}</div>
     </div>
-    <button (click)="openEditForm()">Edit item</button>
+    <button (click)="openEditForm()">EDIT ITEM</button>
+    <button (click)="deleteItem()">DELETE ITEM</button>
   </div>
   <router-outlet></router-outlet>
 </div>

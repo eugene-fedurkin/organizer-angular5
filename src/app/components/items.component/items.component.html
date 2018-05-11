@@ -1,6 +1,6 @@
 <section>
   <h2>{{ list?.title }}</h2>
-  <add-input (addEvent)="addItem($event)" [message]="'Title of a item'"></add-input>
-  <item *ngFor="let item of list?.items" [item]="item"></item>
+  <app-add-input (addEvent)="addItem($event)" [message]="'Title of a item'"></app-add-input>
+  <app-item *ngFor="let item of list?.items" [item]="item"></app-item>
 </section>
 <router-outlet></router-outlet>

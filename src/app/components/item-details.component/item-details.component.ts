@@ -1,56 +1,78 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
 import { Store } from '../../services/store.service';
 import { Item } from '../../models/item.model';
 import { Base } from '../base.component';
 import { List } from '../../models/list.model';
+import { User } from '../../models/user.model';
+import { ModalService } from '../../services/modal.service';
+import { takeUntil } from 'rxjs/operator/takeUntil';
 
 @Component({
-  selector: 'item-details',
+  selector: 'app-item-details',
   templateUrl: './item-details.component.html',
   styleUrls: ['./item-details.component.css']
 })
-export class ItemDetailsComponent extends Base implements OnInit, OnDestroy {
+export class ItemDetailsComponent extends Base implements OnInit {
 
   public item: Item;
-  public subscriptionToItem: Subscription;
-  public subscriptionToList: Subscription;
   private listId: number;
   private itemId: number;
 
   public constructor(
-    private route: ActivatedRoute,
-    private store: Store,
-    private router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly store: Store,
+    private readonly router: Router,
+    private readonly modal: ModalService,
   ) { super(); }
 
   private findItem(lists: List[], listId: number, itemId: number): void {
-    const list = lists.find(list => list.id === listId);
+    const list = lists.find(l => l.id === listId);
     this.item = list.items.find(item => item.id === itemId);
   }
 
   public openEditForm(): void {
-    this.router.navigate([`lists/${this.listId}/${this.itemId}/details/edit-form`]); // pass through ','
+    this.router.navigate(['lists', this.listId, this.itemId, 'details', 'edit-form']);
   }
 
-  ngOnInit() {
-    this.subscriptionToList = this.route.parent.params.subscribe(params => this.listId = +params.listId );
-    this.subscriptionToItem = this.route.params.subscribe(params => {
-      this.itemId = +params.itemId;
-      this.store.state$
+  private closeItem(): void {
+    this.router.navigate(['lists', this.listId]);
+  }
+
+  public deleteItem(): void {
+    this.store.state$
       .takeUntil(this.componentDestroyed)
       .subscribe(user => {
         if (user) {
-          this.findItem(user.lists, this.listId, this.itemId);
+          const handler = () => {
+            const list = user.lists.find(l => l.id === this.listId);
+            const index = list.items.findIndex(i => i.id === this.itemId);
+
+            list.items.splice(index, 1);
+            this.closeItem();
+          };
+          const message = `Are you sure that you want to remove ${this.item.title}`;
+          this.modal.open(handler, message);
         }
       });
-    });
   }
 
-  ngOnDestroy() {
-    this.subscriptionToItem.unsubscribe();
-    this.subscriptionToList.unsubscribe();
+  ngOnInit() {
+    this.route.parent.params
+      .takeUntil(this.componentDestroyed)
+      .subscribe(params => this.listId = +params.listId );
+    this.route.params
+      .takeUntil(this.componentDestroyed)
+      .subscribe(params => {
+        this.itemId = +params.itemId;
+        this.store.state$
+        .takeUntil(this.componentDestroyed)
+        .subscribe(user => {
+          if (user) {
+            this.findItem(user.lists, this.listId, this.itemId);
+          }
+        });
+      });
   }
 }

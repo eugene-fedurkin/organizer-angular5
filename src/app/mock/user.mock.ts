@@ -10,7 +10,7 @@ export const userMock = {
           title: 'item 1',
           description: 'string',
           completed: false,
-          dueDate: 'string',
+          dueDate: new Date(),
           listId: 1,
         },
         {
@@ -18,7 +18,7 @@ export const userMock = {
           title: 'item 2',
           description: 'string',
           completed: true,
-          dueDate: 'string',
+          dueDate: new Date(),
           listId: 1,
         },
         {
@@ -26,15 +26,19 @@ export const userMock = {
           title: 'item 3',
           description: 'string',
           completed: false,
-          dueDate: 'string',
+          dueDate: new Date(),
           listId: 1,
+          marker: {
+            address: '2132 Lacsa Ct, San Jose, CA 95116, США',
+            coordinates: { lat: 37.360809955200835, lng: -121.85150972698364 }
+          }
         },
         {
           id: 4,
           title: 'item 4',
           description: 'string',
           completed: true,
-          dueDate: 'string',
+          dueDate: new Date(),
           listId: 1,
         },
       ]
@@ -48,7 +52,7 @@ export const userMock = {
           title: 'item 5',
           description: 'string',
           completed: false,
-          dueDate: 'string',
+          dueDate: new Date(),
           listId: 2,
         },
         {
@@ -56,7 +60,7 @@ export const userMock = {
           title: 'item 6',
           description: 'string',
           completed: true,
-          dueDate: 'string',
+          dueDate: new Date(),
           listId: 2,
         },
         {
@@ -64,7 +68,7 @@ export const userMock = {
           title: 'item 7',
           description: 'string',
           completed: false,
-          dueDate: 'string',
+          dueDate: new Date(),
           listId: 2,
         },
         {
@@ -72,7 +76,7 @@ export const userMock = {
           title: 'item 8',
           description: 'string',
           completed: true,
-          dueDate: 'string',
+          dueDate: new Date(),
           listId: 2,
         },
       ]

@@ -8,7 +8,7 @@ import { Store } from '../../services/store.service';
 import { Base } from '../base.component';
 
 @Component({
-  selector: 'setting-window',
+  selector: 'app-setting-window',
   templateUrl: './setting-window.component.html',
   styleUrls: ['./setting-window.component.css'],
   animations: [

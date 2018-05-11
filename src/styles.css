@@ -2,7 +2,7 @@ body {
   /* background: url('./assets/main-bg.jpg'); */
   background: rgba(0,0,0,0.8);
   background-position: 50% 50%;
-  height: -webkit-fill-available; /* TODO: replace with -webkit-stretch */
+  
 }
 body, ul, li {
   margin: 0;
@@ -44,7 +44,10 @@ my-date-picker > div > div > input {
 .daycell {
   color: #FAEFD4!important;
 }
-.headerbtncell, .headerbtn, .selectorarrow, .weekdaytitle, .yearlabel, .headertodaybtn, .monthlabel {
+.selectedday .datevalue {
+  background: #023e58!important;
+}
+.headerbtncell, .headerbtn, .selectorarrow, .weekdaytitle, .yearlabel, .headertodaybtn, .monthlabel, .selectiongroup {
   background: none!important;
 }
 .icon-mydpright, .icon-mydpleft, .yearlabel, .headertodaybtn, .icon-mydptoday, .monthlabel, .selectorarrow:after {

@@ -1,44 +1,51 @@
 import 'snazzy-info-window/dist/snazzy-info-window.min.css';
 
 import { MapsAPILoader } from '@agm/core';
-import { Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostBinding, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IMyDpOptions } from 'mydatepicker';
+import { IMyDateModel, IMyDpOptions } from 'mydatepicker';
 import { Subscription } from 'rxjs/Subscription';
 
+import { bounceTop } from '../../animations/bounce-edit-form';
+import { Coordinates } from '../../models/coordinates.model';
 import { Item } from '../../models/item.model';
+import { Marker } from '../../models/marker.model';
 import { User } from '../../models/user.model';
 import { Store } from '../../services/store.service';
 import { Base } from '../base.component';
-import { marker } from './marker-config';
+import { styles } from './google-map.styles';
+import { markerConfig } from './marker-config';
 
 declare var google: any;
 
 @Component({
-  selector: 'edit-form', // TODO: change all selectors to app-*
+  selector: 'app-edit-form',
   templateUrl: './edit-form.component.html',
-  styleUrls: ['./edit-form.component.css']
+  styleUrls: ['./edit-form.component.css'],
+  animations: [ bounceTop() ],
 })
 export class EditFormComponent extends Base implements OnInit, OnDestroy {
 
+  @HostBinding('@bounceTop') private animateProfile = true;
   @ViewChild('search') public search: ElementRef;
   @ViewChild('map') public map;
   private mapRef;
 
   private listId: number;
   private itemId: number;
+  private savedItem: Item;
+  public googleMapStyles = styles;
   public item: Item;
-  public itemTitle: string;
-  public itemDescription: string;
   public itemIdSubscription: Subscription;
   public listIdSubscription: Subscription;
   private autocomplete;
+
+  public dateModel: any = { date: { } };
   public myDatePickerOptions: IMyDpOptions = {
-    // other options...
     dateFormat: 'dd.mm.yyyy',
   };
 
-  public marker = marker;
+  public markerConfig = markerConfig;
 
   public constructor(
     private route: ActivatedRoute,
@@ -48,7 +55,6 @@ export class EditFormComponent extends Base implements OnInit, OnDestroy {
     private zone: NgZone,
   ) { super(); }
 
-  public model: any = { date: { year: 2018, month: 10, day: 9 } };
 
   public mapReady(mapRef) {
     this.mapRef = mapRef;
@@ -62,36 +68,62 @@ export class EditFormComponent extends Base implements OnInit, OnDestroy {
     geocoder.geocode(request, (results, status) => {
       if (status === google.maps.GeocoderStatus.OK) {
         if (results[0] != null) {
-          this.marker.address = results[0].formatted_address;
+          this.item.marker.address = results[0].formatted_address;
+          this.item.marker.coordinates.lat = results[0].geometry.location.lat();
+          this.item.marker.coordinates.lng = results[0].geometry.location.lng();
         } else {
-          alert("No address available"); // TODO: notification
+          alert('No address available'); // TODO: notification
         }
       }
     });
   }
 
   public saveChanges(): void {
-    this.item.title = this.itemTitle;
-    this.item.description = this.itemDescription;
+    this.savedItem.completed = this.item.completed;
+    this.savedItem.description = this.item.description;
+    this.savedItem.dueDate = this.item.dueDate;
+    this.savedItem.marker = this.item.marker;
+    this.savedItem.title = this.item.title;
 
     this.closeForm();
   }
 
   public closeForm(): void {
-    this.router.navigate([`lists/${this.listId}/${this.itemId}/details`]); // pass through ','
+    this.router.navigate(['lists', this.listId, this.itemId, 'details']);
   }
 
   private initializeItem(user: User): void {
-    const list = user.lists.find(list => list.id === this.listId);
-    const item = list.items.find(item => item.id === this.itemId);
+    const list = user.lists.find(l => l.id === this.listId);
+    const item = list.items.find(i => i.id === this.itemId);
 
-    this.item = item;
-    this.itemTitle = item.title;
-    this.itemDescription = item.description;
+    this.savedItem = item;
+    this.item = new Item(
+      item.id,
+      item.title,
+      item.description,
+      item.completed,
+      item.dueDate,
+      item.listId,
+      item.marker,
+    );
     if (item.marker) {
-      this.marker.address = item.marker.address;
-      this.marker.latitude = item.marker.coordinates.lat;
-      this.marker.longitude = item.marker.coordinates.lng;
+      this.item.marker.address = item.marker.address;
+      this.item.marker.coordinates.lat = item.marker.coordinates.lat;
+      this.item.marker.coordinates.lng = item.marker.coordinates.lng;
+    } else {
+      this.item.marker = new Marker();
+      this.item.marker.coordinates = new Coordinates();
+    }
+    if (this.savedItem.dueDate) {
+      this.dateModel.date.year = this.savedItem.dueDate
+        ? this.savedItem.dueDate.getFullYear()
+        : (new Date()).getFullYear();
+      this.dateModel.date.month = this.savedItem.dueDate
+        ? this.savedItem.dueDate.getMonth() + 1
+        : (new Date()).getMonth() + 1;
+      this.dateModel.date.day = this.savedItem.dueDate
+        ? this.savedItem.dueDate.getDate()
+        : (new Date()).getDate();
     }
   }
 
@@ -100,22 +132,35 @@ export class EditFormComponent extends Base implements OnInit, OnDestroy {
       const place = this.autocomplete.getPlace();
 
       if (!place.geometry) {
-        window.alert("No details available for input: '" + place.name + "'");
+        window.alert(`No details available for input: ${place.name}`);
         return;
       }
-      this.marker.latitude = place.geometry.location.lat();
-      this.marker.longitude = place.geometry.location.lng();
-      this.marker.address = place.address_components.reduce((prev, current) => {
+      this.item.marker.coordinates.lat = place.geometry.location.lat();
+      this.item.marker.coordinates.lng = place.geometry.location.lng();
+      this.item.marker.address = place.address_components.reduce((prev, current) => {
         if (prev) return `${prev}, ${current['long_name']}`;
         else return `${current['long_name']}`;
       }, '');
 
       this.mapRef.setCenter(place.geometry.location);
-      this.mapRef.setZoom(17);
-    })
+      this.mapRef.setZoom(this.markerConfig.zoom);
+    });
   }
 
-  ngOnInit() {
+  public dateChanges(event: IMyDateModel): void {
+    const year = event.date.year;
+    const month = event.date.month;
+    const day = event.date.day;
+
+    if (!event.date.day || !event.date.month || !event.date.month) {
+      console.log('Uncorrect date!'); // TODO: notify
+      return;
+    }
+
+    this.item.dueDate = new Date(year, month, day);
+  }
+
+  public ngOnInit() {
     this.itemIdSubscription = this.route.parent.params
       .takeUntil(this.componentDestroyed)
       .subscribe(param => this.itemId = +param.itemId);
@@ -129,16 +174,16 @@ export class EditFormComponent extends Base implements OnInit, OnDestroy {
           this.initializeItem(user);
         }
       }
-    )
+    );
     this.mapsAPILoader.load()
       .then(() => {
-        this.autocomplete = new google.maps.places.Autocomplete(this.search.nativeElement, { types: ['address'] });
+        this.autocomplete = new google.maps.places.Autocomplete(this.search.nativeElement);
 
         this.autocomplete.addListener('place_changed', () => this.changeMapLocation());
     });
   }
 
-  OnDestroy() {
+  public OnDestroy() {
     this.componentDestroyed.next();
     this.autocomplete.removeEventListener('place_changed', this.changeMapLocation);
   }

@@ -8,7 +8,7 @@ import { ModalService } from '../../services/modal.service';
 import { Base } from '../base.component';
 
 @Component({
-  selector: 'list',
+  selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css'],
   animations: [
@@ -49,6 +49,7 @@ export class ListComponent extends Base implements OnInit {
   }
 
   public edit(): void {
+    event.stopPropagation();
     if (this.list.id >= 0) {
       this.isEditMod = !this.isEditMod;
 

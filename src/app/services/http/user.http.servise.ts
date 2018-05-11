@@ -12,7 +12,7 @@ import { User } from '../../models/user.model';
 export class HttpService implements IUserHttpService {
 
   private url = 'https://organizerapi.azurewebsites.net';
-  private readonly options = { // TODO: RequestOption is doesnt work
+  private readonly options = {
     withCredentials: true
   };
 

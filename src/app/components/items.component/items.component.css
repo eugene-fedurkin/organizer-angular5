@@ -1,5 +1,6 @@
 :host {
-  display: flex;
+  display: grid;
+  grid-template-columns: 295px calc(100% - 295px);
   grid-column: 2 / 3;
   grid-row: 1 / 2;
 }

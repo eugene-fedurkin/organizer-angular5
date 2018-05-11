@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'add-input',
+  selector: 'app-add-input',
   templateUrl: './add-input.component.html',
   styleUrls: ['./add-input.component.css']
 })
