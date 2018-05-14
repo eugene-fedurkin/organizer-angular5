@@ -21,6 +21,7 @@ import { ListsComponent } from './components/lists.component/lists.component';
 import { LoaderComponent } from './components/loader.component/loader.component';
 import { ModalComponent } from './components/modal.component/modal.component';
 import { SettingWindowComponent } from './components/setting-window.component/setting-window.component';
+import { PageNotFoundComponent } from './components/page-not-found.component/page-not-found.component';
 import { IItemHttpService } from './interfaces/i.item.http';
 import { IListHttpService } from './interfaces/i.list.http';
 import { IUserHttpService } from './interfaces/i.user.http';
@@ -29,8 +30,11 @@ import { MockListHttpService } from './mock/mock.list.http.service';
 import { MockUserHttpService } from './mock/mock.user.http.service';
 import { LoaderService } from './services/loader.service';
 import { ModalService } from './services/modal.service';
-import { UnsavedEntitiesFactory } from './services/queue.service';
+import { UnsavedEntitiesFactory } from './services/unsaved-entities-factory.service';
 import { Store } from './services/store.service';
+import { UserHttpService } from './services/http/user.http.service';
+import { ListHttpService } from './services/http/list.http.service';
+import { ItemHttpService } from './services/http/item.http.service';
 
 @NgModule({
   declarations: [
@@ -46,7 +50,8 @@ import { Store } from './services/store.service';
     ItemComponent,
     ItemDetailsComponent,
     AddInputComponent,
-    EditFormComponent
+    EditFormComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -69,9 +74,9 @@ import { Store } from './services/store.service';
     UnsavedEntitiesFactory,
     MarkerManager,
     GoogleMapsAPIWrapper,
-    { provide: IUserHttpService, useClass: MockUserHttpService }, // mock: MockUserHttpService, original: UserHttpService
-    { provide: IListHttpService, useClass: MockListHttpService }, // mock: MockListHttpService, original: ListHttpService
-    { provide: IItemHttpService, useClass: MockItemHttpService }, // mock: MockItemHttpService, original: ItemHttpService
+    { provide: IUserHttpService, useClass: UserHttpService }, // mock: MockUserHttpService, original: UserHttpService
+    { provide: IListHttpService, useClass: ListHttpService }, // mock: MockListHttpService, original: ListHttpService
+    { provide: IItemHttpService, useClass: ItemHttpService }, // mock: MockItemHttpService, original: ItemHttpService
   ],
   bootstrap: [AppComponent]
 })

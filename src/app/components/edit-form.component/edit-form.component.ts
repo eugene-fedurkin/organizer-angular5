@@ -7,7 +7,6 @@ import { IMyDateModel, IMyDpOptions } from 'mydatepicker';
 import { Subscription } from 'rxjs/Subscription';
 
 import { bounceTop } from '../../animations/bounce-edit-form';
-import { Coordinates } from '../../models/coordinates.model';
 import { Item } from '../../models/item.model';
 import { Marker } from '../../models/marker.model';
 import { User } from '../../models/user.model';
@@ -15,6 +14,7 @@ import { Store } from '../../services/store.service';
 import { Base } from '../base.component';
 import { styles } from './google-map.styles';
 import { markerConfig } from './marker-config';
+import { IItemHttpService } from '../../interfaces/i.item.http';
 
 declare var google: any;
 
@@ -33,7 +33,7 @@ export class EditFormComponent extends Base implements OnInit, OnDestroy {
 
   private listId: number;
   private itemId: number;
-  private savedItem: Item;
+  public savedItem: Item;
   public googleMapStyles = styles;
   public item: Item;
   public itemIdSubscription: Subscription;
@@ -48,11 +48,12 @@ export class EditFormComponent extends Base implements OnInit, OnDestroy {
   public markerConfig = markerConfig;
 
   public constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private store: Store,
-    private mapsAPILoader: MapsAPILoader,
-    private zone: NgZone,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly store: Store,
+    private readonly mapsAPILoader: MapsAPILoader,
+    private readonly zone: NgZone,
+    private readonly http: IItemHttpService,
   ) { super(); }
 
 
@@ -68,9 +69,9 @@ export class EditFormComponent extends Base implements OnInit, OnDestroy {
     geocoder.geocode(request, (results, status) => {
       if (status === google.maps.GeocoderStatus.OK) {
         if (results[0] != null) {
-          this.item.marker.address = results[0].formatted_address;
-          this.item.marker.coordinates.lat = results[0].geometry.location.lat();
-          this.item.marker.coordinates.lng = results[0].geometry.location.lng();
+          this.item.mapMarker.address = results[0].formatted_address;
+          this.item.mapMarker.latitude = results[0].geometry.location.lat();
+          this.item.mapMarker.longitude = results[0].geometry.location.lng();
         } else {
           alert('No address available'); // TODO: notification
         }
@@ -79,13 +80,22 @@ export class EditFormComponent extends Base implements OnInit, OnDestroy {
   }
 
   public saveChanges(): void {
-    this.savedItem.completed = this.item.completed;
-    this.savedItem.description = this.item.description;
-    this.savedItem.dueDate = this.item.dueDate;
-    this.savedItem.marker = this.item.marker;
-    this.savedItem.title = this.item.title;
+    if (this.isEmpty(this.item.mapMarker)) this.item.mapMarker = null;
 
-    this.closeForm();
+    const subscr = this.http.updateItem(this.item)
+      .finally(() => subscr.unsubscribe())
+      .subscribe(item => {
+        this.savedItem.completed = this.item.completed;
+        this.savedItem.description = this.item.description;
+        this.savedItem.dueDate = this.item.dueDate;
+        this.savedItem.mapMarker = this.item.mapMarker;
+        this.savedItem.title = this.item.title;
+
+        this.closeForm();
+      }, error => {
+        console.log('Error'); // TODO: nitify
+      }
+    );
   }
 
   public closeForm(): void {
@@ -104,26 +114,32 @@ export class EditFormComponent extends Base implements OnInit, OnDestroy {
       item.completed,
       item.dueDate,
       item.listId,
-      item.marker,
+      item.mapMarker,
     );
-    if (item.marker) {
-      this.item.marker.address = item.marker.address;
-      this.item.marker.coordinates.lat = item.marker.coordinates.lat;
-      this.item.marker.coordinates.lng = item.marker.coordinates.lng;
+    if (item.mapMarker) {
+      this.item.mapMarker.address = item.mapMarker.address;
+      this.item.mapMarker.latitude = item.mapMarker.latitude;
+      this.item.mapMarker.longitude = item.mapMarker.longitude;
     } else {
-      this.item.marker = new Marker();
-      this.item.marker.coordinates = new Coordinates();
+      this.item.mapMarker = new Marker();
     }
-    if (this.savedItem.dueDate) {
-      this.dateModel.date.year = this.savedItem.dueDate
-        ? this.savedItem.dueDate.getFullYear()
-        : (new Date()).getFullYear();
-      this.dateModel.date.month = this.savedItem.dueDate
-        ? this.savedItem.dueDate.getMonth() + 1
-        : (new Date()).getMonth() + 1;
-      this.dateModel.date.day = this.savedItem.dueDate
-        ? this.savedItem.dueDate.getDate()
-        : (new Date()).getDate();
+
+    const date = this.savedItem.dueDate
+      ? this.savedItem.dueDate.split('-')
+      : '';
+
+    this.dateModel.date.year = this.savedItem.dueDate
+      ? date[0]
+      : (new Date()).getFullYear();
+    this.dateModel.date.month = this.savedItem.dueDate
+      ? date[1]
+      : (new Date()).getMonth() + 1;
+    this.dateModel.date.day = this.savedItem.dueDate
+      ? date[2]
+      : (new Date()).getDate();
+
+      if (!this.item.dueDate) {
+        this.item.dueDate = `${this.dateModel.date.year}-${this.dateModel.date.month}-${this.dateModel.date.day}`;
     }
   }
 
@@ -135,9 +151,9 @@ export class EditFormComponent extends Base implements OnInit, OnDestroy {
         window.alert(`No details available for input: ${place.name}`);
         return;
       }
-      this.item.marker.coordinates.lat = place.geometry.location.lat();
-      this.item.marker.coordinates.lng = place.geometry.location.lng();
-      this.item.marker.address = place.address_components.reduce((prev, current) => {
+      this.item.mapMarker.latitude = place.geometry.location.lat();
+      this.item.mapMarker.longitude = place.geometry.location.lng();
+      this.item.mapMarker.address = place.address_components.reduce((prev, current) => {
         if (prev) return `${prev}, ${current['long_name']}`;
         else return `${current['long_name']}`;
       }, '');
@@ -148,16 +164,20 @@ export class EditFormComponent extends Base implements OnInit, OnDestroy {
   }
 
   public dateChanges(event: IMyDateModel): void {
-    const year = event.date.year;
-    const month = event.date.month;
-    const day = event.date.day;
+    this.dateModel.date.year = event.date.year;
+    this.dateModel.date.month = event.date.month;
+    this.dateModel.date.day = event.date.day;
 
     if (!event.date.day || !event.date.month || !event.date.month) {
       console.log('Uncorrect date!'); // TODO: notify
       return;
     }
 
-    this.item.dueDate = new Date(year, month, day);
+    this.item.dueDate = `${this.dateModel.date.year}-${this.dateModel.date.month}-${this.dateModel.date.day}`;
+  }
+
+  private isEmpty(obj: Object): boolean {
+    return Object.keys(obj).length === 0;
   }
 
   public ngOnInit() {

@@ -1,6 +1,5 @@
 import { IListHttpService } from '../interfaces/i.list.http';
 import { List } from '../models/list.model';
-// import { Observable } from 'rxjs/Rx'; // for to get exaption
 import { Observable } from 'rxjs/Observable';
 import { ListCreate } from '../models/list-create.model';
 
@@ -12,8 +11,11 @@ export class MockListHttpService implements IListHttpService {
 
   public createList(list: ListCreate): Observable<List> {
     const newList = new List(this.id++, list.title, []);
-    return Observable.from([newList]).delay(2000);
-    // return Observable.interval(2000).map(list => {throw new ErrorObservable('qwe')});
+    if (Math.random() > 0.1) {
+      return Observable.from([newList]).delay(2000);
+    } else {
+      return Observable.interval(2000).map(resp => { throw new ErrorObservable('Error'); });
+    }
   }
 
   public removeList(id: number): Observable<List> {

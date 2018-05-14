@@ -1,6 +1,5 @@
-import { Coordinates } from './coordinates.model';
-
 export class Marker {
   public address: string;
-  public coordinates: Coordinates;
+  public longitude: number;
+  public latitude: number;
 }

@@ -6,6 +6,7 @@ import { EditFormComponent } from './components/edit-form.component/edit-form.co
 import { ItemDetailsComponent } from './components/item-details.component/item-details.component';
 import { ItemsComponent } from './components/items.component/items.component';
 import { ListsComponent } from './components/lists.component/lists.component';
+import { PageNotFoundComponent } from './components/page-not-found.component/page-not-found.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/auth', pathMatch: 'full' },
@@ -17,6 +18,7 @@ const routes: Routes = [
       ] },
     ] },
   ] },
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({

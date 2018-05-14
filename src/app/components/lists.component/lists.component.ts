@@ -7,7 +7,7 @@ import { IUserHttpService } from '../../interfaces/i.user.http';
 import { ListCreate } from '../../models/list-create.model';
 import { List } from '../../models/list.model';
 import { LoaderService } from '../../services/loader.service';
-import { UnsavedEntitiesFactory } from '../../services/queue.service';
+import { UnsavedEntitiesFactory } from '../../services/unsaved-entities-factory.service';
 import { Store } from '../../services/store.service';
 import { Base } from '../base.component';
 

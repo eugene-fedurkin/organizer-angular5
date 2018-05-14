@@ -23,34 +23,9 @@
   transform: translateX(3px);
   cursor: pointer;
 }
-/* .checkbox {
-  position: relative;
-  width: 11px;
-  height: 11px;
-  margin-right: 5px;
-  cursor: pointer;
-  appearance: none;
-  outline: 0;
-  justify-self: end;
+.title {
+  overflow: hidden;
 }
-.checkbox:before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  border: 1px solid #FAEFD4;
-  transition: all 0.3s ease-in-out;
-}
-
-.checkbox:checked:before {
-  height: 50%;
-  transform: rotate(-45deg);
-  border-top-style: none;
-  border-right-style: none;
-} */
 div.cntr {
   position: relative;
   justify-self: end;

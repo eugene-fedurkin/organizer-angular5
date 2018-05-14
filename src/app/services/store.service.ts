@@ -28,6 +28,8 @@ export class Store {
   }
 
   public saveList(list: List): void {
+    if (!this.user.lists) this.user.lists = [];
+
     this.user.lists.push(list);
     this.userSubject.next(this.user);
   }
@@ -54,6 +56,8 @@ export class Store {
 
   public saveItem(item: Item): void {
     const list = this.user.lists.find(l => l.id === item.listId);
+
+    if (!list.items) list.items = [];
 
     list.items.push(item);
     this.userSubject.next(this.user);

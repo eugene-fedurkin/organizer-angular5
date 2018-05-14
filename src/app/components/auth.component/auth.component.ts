@@ -1,4 +1,5 @@
 import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/finally';
 
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -50,14 +51,14 @@ export class AuthComponent extends Base implements OnInit {
       .subscribe(resp => {
         this.httpService.getCurrentUserVerbose()
           .takeUntil(this.componentDestroyed)
+          .finally(() => this.loader.hide())
           .subscribe(user => this.store.saveUser(user));
         this.router.navigate(['/lists']);
       },
       error => {
         console.log(error); // TODO: notify user
         this.credentials.password = '';
-      },
-      () => this.loader.hide()
+      }
     );
   }
 
@@ -71,12 +72,12 @@ export class AuthComponent extends Base implements OnInit {
     this.loader.show();
     this.httpService.getCurrentUserVerbose()
       .takeUntil(this.componentDestroyed)
+      .finally(() => this.loader.hide())
       .subscribe(user => {
           this.store.saveUser(user);
           this.router.navigate(['/lists']);
         },
-        error => {},
-        () => this.loader.hide()
+        error => { }
     );
   }
 }

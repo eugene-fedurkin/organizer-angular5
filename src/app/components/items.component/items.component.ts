@@ -5,7 +5,7 @@ import { Store } from '../../services/store.service';
 import { Base } from '../base.component';
 import { List } from '../../models/list.model';
 import { Item } from '../../models/item.model';
-import { UnsavedEntitiesFactory } from '../../services/queue.service';
+import { UnsavedEntitiesFactory } from '../../services/unsaved-entities-factory.service';
 import { ItemCreate } from '../../models/item-create';
 import { IItemHttpService } from '../../interfaces/i.item.http';
 

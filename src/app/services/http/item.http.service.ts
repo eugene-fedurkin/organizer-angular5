@@ -19,4 +19,12 @@ export class ItemHttpService implements IItemHttpService {
   public createItem(item: ItemCreate): Observable<Item> {
     return this.http.post<Item>(this.url, item, this.options);
   }
+
+  public removeItem(id: number): Observable<Item> {
+    return this.http.delete<Item>(`${this.url}/${id}`, this.options);
+  }
+
+  public updateItem(item: Item): Observable<Item> {
+    return this.http.put<Item>(`${this.url}/${item.id}`, item, this.options);
+  }
 }

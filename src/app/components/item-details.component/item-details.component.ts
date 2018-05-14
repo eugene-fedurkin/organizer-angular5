@@ -8,6 +8,8 @@ import { List } from '../../models/list.model';
 import { User } from '../../models/user.model';
 import { ModalService } from '../../services/modal.service';
 import { takeUntil } from 'rxjs/operator/takeUntil';
+import { IItemHttpService } from '../../interfaces/i.item.http';
+import { UnsavedEntitiesFactory } from '../../services/unsaved-entities-factory.service';
 
 @Component({
   selector: 'app-item-details',
@@ -25,6 +27,8 @@ export class ItemDetailsComponent extends Base implements OnInit {
     private readonly store: Store,
     private readonly router: Router,
     private readonly modal: ModalService,
+    private readonly itemService: IItemHttpService,
+    private readonly factory: UnsavedEntitiesFactory,
   ) { super(); }
 
   private findItem(lists: List[], listId: number, itemId: number): void {
@@ -49,7 +53,14 @@ export class ItemDetailsComponent extends Base implements OnInit {
             const list = user.lists.find(l => l.id === this.listId);
             const index = list.items.findIndex(i => i.id === this.itemId);
 
-            list.items.splice(index, 1);
+            this.factory.removeItem(list.items[index]);
+
+            const subscr = this.itemService.removeItem(this.itemId)
+              .finally(() => subscr.unsubscribe())
+              .subscribe(
+                item => list.items.splice(index, 1),
+                err => this.factory.cancelRemove(list.items[index])
+              );
             this.closeItem();
           };
           const message = `Are you sure that you want to remove ${this.item.title}`;

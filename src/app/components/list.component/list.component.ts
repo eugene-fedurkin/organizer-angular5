@@ -1,4 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
+import { Router } from '@angular/router';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 
 import { IListHttpService } from '../../interfaces/i.list.http';
@@ -30,7 +31,11 @@ export class ListComponent extends Base implements OnInit {
   public isEditMod: boolean = false;
   public titleToEdit: string = '';
 
-  public constructor(private listHttp: IListHttpService, private modal: ModalService) { super(); }
+  public constructor(
+    private listHttp: IListHttpService,
+    private modal: ModalService,
+    private router: Router,
+  ) { super(); }
 
   public removeList(): void {
     if (this.list.id >= 0) {
@@ -38,7 +43,7 @@ export class ListComponent extends Base implements OnInit {
         this.listHttp.removeList(this.list.id)
         .takeUntil(this.componentDestroyed)
         .subscribe(
-          list => this.deleteList.emit(list.id),
+          list => { this.deleteList.emit(list.id); this.router.navigate(['lists']); },
           error => console.log(error)
         );
       };

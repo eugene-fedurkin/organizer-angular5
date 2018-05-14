@@ -1,6 +1,6 @@
 <div class="outside">
   <div class="container">
-    <h3>{{item?.title}}</h3>
+    <h3>{{savedItem?.title}}</h3>
     <div class="upperPanel">
       <div>
         <span>Done </span>
@@ -31,11 +31,11 @@
     </div>
     <agm-map
       [styles]="googleMapStyles"
-      [latitude]="item.marker && item.marker.coordinates && item.marker.coordinates.lat
-        ? item.marker.coordinates.lat
+      [latitude]="item.mapMarker && item.mapMarker.latitude
+        ? item.mapMarker.latitude
         : markerConfig.latitude"
-      [longitude]="item.marker && item.marker.coordinates && item.marker.coordinates.lng
-        ? item.marker.coordinates.lng
+      [longitude]="item.mapMarker && item.mapMarker.longitude
+        ? item.mapMarker.longitude
         : markerConfig.longitude"
       [zoom]="markerConfig.zoom"
       backgroundColor="none"
@@ -44,18 +44,18 @@
     >
       <agm-marker
         (dragEnd)="dragEnd($event)"
-        [latitude]="item.marker && item.marker.coordinates && item.marker.coordinates.lat
-          ? item.marker.coordinates.lat
+        [latitude]="item.mapMarker && item.mapMarker.latitude
+          ? item.mapMarker.latitude
           : markerConfig.latitude"
-        [longitude]="item.marker && item.marker.coordinates && item.marker.coordinates.lng
-          ? item.marker.coordinates.lng
+        [longitude]="item.mapMarker && item.mapMarker.longitude
+          ? item.mapMarker.longitude
           : markerConfig.longitude"
         [iconUrl]="markerConfig.iconUrl"
         [markerDraggable]="markerConfig.markerDraggable"
       >
-        <agm-snazzy-info-window [maxWidth]="200" [closeWhenOthersOpen]="true" [isOpen]="!!item.marker.address">
+        <agm-snazzy-info-window [maxWidth]="200" [closeWhenOthersOpen]="true" [isOpen]="!!item.mapMarker?.address">
           <ng-template>
-            {{item.marker?.address || "Move the marker to a specific address"}}
+            {{item.mapMarker?.address || "Move the marker to a specific address"}}
           </ng-template>
         </agm-snazzy-info-window>
       </agm-marker>
