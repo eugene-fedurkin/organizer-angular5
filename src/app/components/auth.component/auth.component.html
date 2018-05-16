@@ -1,32 +1,68 @@
 <div class="outside">
   <div class="container">
-    <div class="form" [class.flipped]="authMod === 'Sign up'">
-      <figure class="front">
+    <div class="formField" [class.flipped]="authMod === 'Sign up'">
+      <form (ngSubmit)="signIn()" class="front" [formGroup]="signInForm">
         <h3>Sign In</h3>
         <span>
-          <input [(ngModel)]="credentials.email" id="SignInEmail" type="text" placeholder="Email" autocomplete="false" />
-          <label for="SignInEmail"></label>
+          <input
+            id="signInEmail"
+            type="text"
+            placeholder="Email"
+            autocomplete="off"
+            formControlName="email" />
+          <label for="signInEmail"></label>
         </span>
         <span>
-          <input [(ngModel)]="credentials.password" id="SignInPassword" type="password" placeholder="Password" autocomplete="false" />
-          <label for="SignInPassword"></label>
+          <input
+            id="signInPassword"
+            type="password"
+            placeholder="Password"
+            formControlName="password"
+            autocomplete="off" />
+          <label for="signInPassword"></label>
         </span>
-        <button (click)="signIn()">Sign in</button>
+        <button type="submit">Sign in</button>
         <div class="toggler">New to Organizer? <span (click)="toggleMod()">Sign up</span></div>
-      </figure>
-      <figure class="back">
+      </form>
+      <form (ngSubmit)="signUp()" class="back" [formGroup]="signUpForm">
         <h3>Sign up</h3>
+        <div formGroupName="emailGroup">
+          <span>
+            <input
+              id="signUpEmail"
+              type="text"
+              placeholder="Email"
+              formControlName="email"
+              autocomplete="off" />
+            <label for="signUpEmail"></label>
+          </span>
+          <span>
+            <input
+              id="emailConfirm"
+              type="text"
+              placeholder="Confirm email"
+              formControlName="emailConfirm"
+              autocomplete="off" />
+            <label for="emailConfirm"></label>
+          </span>
+        </div>
         <span>
-          <input [(ngModel)]="credentials.email" id="SignUpEmail" type="text" placeholder="Email" autocomplete="false" />
-          <label for="SignUpEmail"></label>
+          <input
+            id="signUpPassword"
+            type="password"
+            placeholder="Password"
+            formControlName="password"
+            autocomplete="off" />
+          <label for="signUpPassword"></label>
         </span>
-        <span>
-          <input [(ngModel)]="credentials.password" id="SignUpPassword" type="password" placeholder="Password" autocomplete="false" />
-          <label for="SignUpPassword"></label>
-        </span>
-        <button (click)="signUp()">Create an account</button>
+        <button type="submit">Create an account</button>
         <div class="toggler">Are you have an account? <span (click)="toggleMod()">Sign in</span></div>
-      </figure>
+        <div *ngIf="errorMessages" class="toggler">{{errorMessages}}</div>
+      </form>
     </div>
+    <div>1111111111111111</div>
   </div>
 </div>
+<div>{{signInForm.value | json}}</div>
+<div>{{signUpForm.value | json}}</div>
+<!-- <div *ngIf="errorMessages">{{errorMessages}}</div> -->

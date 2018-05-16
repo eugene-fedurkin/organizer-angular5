@@ -15,7 +15,7 @@ import { fadeItem } from '../../animations/fade-item';
 })
 export class ItemComponent {
 
-  @HostBinding('@fadeItem') private animateProfile = true;
+  @HostBinding('@fadeItem') private animateItem;
   @Input() public item: ItemModel;
   public subscription: Subscription;
   public constructor(private router: Router) {

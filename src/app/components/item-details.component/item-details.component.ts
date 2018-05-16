@@ -71,10 +71,8 @@ export class ItemDetailsComponent extends Base implements OnInit {
 
   ngOnInit() {
     this.route.parent.params
-      .takeUntil(this.componentDestroyed)
       .subscribe(params => this.listId = +params.listId );
     this.route.params
-      .takeUntil(this.componentDestroyed)
       .subscribe(params => {
         this.itemId = +params.itemId;
         this.store.state$

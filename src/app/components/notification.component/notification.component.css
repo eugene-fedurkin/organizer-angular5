@@ -1,0 +1,14 @@
+.container {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  color: #ffffff;
+}
+.message {
+  width: 245px;
+  word-wrap: break-word;
+  background: rgba(255,255,255, 0.09);
+  padding: 15px;
+  margin: 10px;
+  border-radius: 4px;
+}

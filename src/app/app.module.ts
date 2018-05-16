@@ -2,7 +2,7 @@ import { AgmCoreModule, GoogleMapsAPIWrapper, MarkerManager } from '@agm/core';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MyDatePickerModule } from 'mydatepicker';
@@ -35,6 +35,8 @@ import { Store } from './services/store.service';
 import { UserHttpService } from './services/http/user.http.service';
 import { ListHttpService } from './services/http/list.http.service';
 import { ItemHttpService } from './services/http/item.http.service';
+import { NotificationComponent } from './components/notification.component/notification.component';
+import { NotificationService } from './services/notification.service';
 
 @NgModule({
   declarations: [
@@ -51,11 +53,13 @@ import { ItemHttpService } from './services/http/item.http.service';
     ItemDetailsComponent,
     AddInputComponent,
     EditFormComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    NotificationComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -72,6 +76,7 @@ import { ItemHttpService } from './services/http/item.http.service';
     LoaderService,
     ModalService,
     UnsavedEntitiesFactory,
+    NotificationService,
     MarkerManager,
     GoogleMapsAPIWrapper,
     { provide: IUserHttpService, useClass: UserHttpService }, // mock: MockUserHttpService, original: UserHttpService

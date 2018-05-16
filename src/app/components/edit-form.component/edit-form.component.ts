@@ -182,10 +182,8 @@ export class EditFormComponent extends Base implements OnInit, OnDestroy {
 
   public ngOnInit() {
     this.itemIdSubscription = this.route.parent.params
-      .takeUntil(this.componentDestroyed)
       .subscribe(param => this.itemId = +param.itemId);
     this.listIdSubscription = this.route.parent.parent.params
-      .takeUntil(this.componentDestroyed)
       .subscribe(param => this.listId = +param.listId);
     this.store.state$
       .takeUntil(this.componentDestroyed)
