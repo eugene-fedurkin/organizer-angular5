@@ -79,9 +79,9 @@ import { NotificationService } from './services/notification.service';
     NotificationService,
     MarkerManager,
     GoogleMapsAPIWrapper,
-    { provide: IUserHttpService, useClass: UserHttpService }, // mock: MockUserHttpService, original: UserHttpService
-    { provide: IListHttpService, useClass: ListHttpService }, // mock: MockListHttpService, original: ListHttpService
-    { provide: IItemHttpService, useClass: ItemHttpService }, // mock: MockItemHttpService, original: ItemHttpService
+    { provide: IUserHttpService, useClass: MockUserHttpService }, // mock: MockUserHttpService, original: UserHttpService
+    { provide: IListHttpService, useClass: MockListHttpService }, // mock: MockListHttpService, original: ListHttpService
+    { provide: IItemHttpService, useClass: MockItemHttpService }, // mock: MockItemHttpService, original: ItemHttpService
   ],
   bootstrap: [AppComponent]
 })

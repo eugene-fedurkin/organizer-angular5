@@ -17,6 +17,7 @@ input::placeholder {
 label {
   position: absolute;
   bottom: 15px;
+  left: 0;
   height: 1px;
   height: 1px;
   width: 0px;
@@ -39,4 +40,33 @@ img {
 }
 img:active {
   opacity: 0.6;
+}
+form {
+  position: relative;
+}
+form .tooltiptext {
+  width: 245px;
+  border: 1px solid #FAEFD4;
+  background-color: #333333;
+  color: #FAEFD4;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 29%;
+  margin-left: -60px;
+  -webkit-transition: opacity 0.3s;
+  transition: opacity 0.3s;
+}
+form .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #FAEFD4 transparent transparent transparent;
 }

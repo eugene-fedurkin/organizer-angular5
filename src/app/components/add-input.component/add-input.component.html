@@ -1,5 +1,16 @@
 <div>
-  <input [(ngModel)]="title" (keyup.enter)="add()" id="title" type="text" [placeholder]="message" autocomplete="false" />
-  <label for="title"></label>
-  <img (click)="clear()" src="../../../assets/cancel.svg" alt="close" />
+  <form [formGroup]="titleForm">
+      <input
+      (keyup.enter)="add()"
+      (blur)="closeMessage()"
+      id="title"
+      type="text"
+      [placeholder]="message"
+      formControlName="title"
+      autocomplete="false" />
+      <label for="title"></label>
+      <img (click)="clear()" src="../../../assets/cancel.svg" alt="close" />
+    <span *ngIf="errorMessage" class="tooltiptext" [@fadeTooltip]>{{errorMessage}}</span>
+  </form>
 </div>
+<div>{{titleForm.get('title').value}}</div>

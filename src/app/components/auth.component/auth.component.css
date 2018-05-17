@@ -33,6 +33,7 @@ input {
   color: #ffffff;
   font-size: 18px;
   font-family: inherit;
+  transition: all .2s linear;
 }
 input:-webkit-autofill {
   -webkit-text-fill-color: #ffffff;
@@ -42,7 +43,7 @@ input:-webkit-autofill {
 input::placeholder {
   color: #ffffff;
 }
-.toggler {
+.toggler, .validationmessage {
   margin-top: 12px;
   color: white;
   height: 32px;
@@ -67,7 +68,11 @@ button {
   font-family: inherit;
   cursor: pointer;
 }
-
+button:disabled {
+  background: #cccccc;
+  color: #666666;
+  cursor: default;
+}
 /*test animation*/
 .outside {
   display: flex;
@@ -112,4 +117,15 @@ form {
 }
 .formField.flipped {
 	transform: rotateY( 180deg );
+}
+img {
+  width: 18px;
+  margin-left: -5px;
+}
+input.error, .emailMatch > span > input {
+  border-left-color: #FF9494;
+  color: #FF9494;
+}
+input.error ~ label, .emailMatch > span > input ~ label {
+  background: #FF9494;
 }

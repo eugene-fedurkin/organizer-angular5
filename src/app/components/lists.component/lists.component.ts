@@ -1,40 +1,32 @@
-import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { fadeList } from '../../animations/fade-list';
 import { IListHttpService } from '../../interfaces/i.list.http';
 import { IUserHttpService } from '../../interfaces/i.user.http';
 import { ListCreate } from '../../models/list-create.model';
 import { List } from '../../models/list.model';
 import { LoaderService } from '../../services/loader.service';
-import { UnsavedEntitiesFactory } from '../../services/unsaved-entities-factory.service';
 import { Store } from '../../services/store.service';
+import { UnsavedEntitiesFactory } from '../../services/unsaved-entities-factory.service';
 import { Base } from '../base.component';
 
 @Component({
   templateUrl: './lists.component.html',
   styleUrls: ['./lists.component.css'],
-  animations: [
-    trigger('fadeOut', [
-      transition(':leave', [
-        style({ opacity: 1, transform: 'translateX(0)' }),
-        animate('300ms', style({ opacity: 0, transform: 'translateX(-150px)' }))
-      ])
-    ])
-  ]
+  animations: [ fadeList() ],
 })
 export class ListsComponent extends Base implements OnInit {
 
-  // public title: string = '';
   public lists: List[] = [];
 
   public constructor(
-    private store: Store,
-    private userHttp: IUserHttpService,
-    private listHttp: IListHttpService,
-    private loader: LoaderService,
-    private router: Router,
-    private unsavedEntitiesFactory: UnsavedEntitiesFactory,
+    private readonly store: Store,
+    private readonly userHttp: IUserHttpService,
+    private readonly listHttp: IListHttpService,
+    private readonly loader: LoaderService,
+    private readonly router: Router,
+    private readonly unsavedEntitiesFactory: UnsavedEntitiesFactory,
   ) { super(); }
 
   public addList(title: string): void {
