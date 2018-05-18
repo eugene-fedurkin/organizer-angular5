@@ -40,18 +40,25 @@ export class SettingWindowComponent extends Base {
 
   public confirmSignOut(): void {
     this.closeWindow();
-    const handler = () => {
-      this.http.signOut()
-        .takeUntil(this.componentDestroyed)
-        .subscribe(resp => {
-          this.store.removeUser();
-          this.router.navigate(['./auth']);
-        },
-      error => console.log('Server isnt access right now'));
-    };
     const message = 'Are you sure that you want to sign out?';
 
-    this.modal.open(handler, message);
+    const sub = this.modal.open(message)
+      .subscribe(result => {
+        if (result) {
+          this.handler();
+        }
+        sub.unsubscribe();
+    });
+  }
+
+  private handler(): void {
+    this.http.signOut()
+      .takeUntil(this.componentDestroyed)
+      .subscribe(resp => {
+        this.store.removeUser();
+        this.router.navigate(['./auth']);
+      },
+    error => console.log('Server isnt access right now'));
   }
 
   public closeWindow(): void {

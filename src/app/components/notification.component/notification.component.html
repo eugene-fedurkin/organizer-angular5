@@ -1,7 +1,7 @@
 <div class="container">
-  <ul *ngFor="let message of messages" [@staggerNotification]>
+  <ul *ngFor="let m of messages" [@staggerNotification]>
     <li class="message">
-      {{message}}
+      {{m.message}}
     </li>
   </ul>
 </div>

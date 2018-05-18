@@ -11,8 +11,10 @@ import { NotificationService } from '../../services/notification.service';
 })
 export class NotificationComponent {
 
-  public get messages(): string[] {
-    return this.notify.notifyMessage;
+  public get messages(): Array<{id: number, message: string}> {
+    return this.notify.messageOptions.length
+      ? this.notify.messageOptions
+      : [];
   }
 
   constructor(public readonly notify: NotificationService) {}

@@ -4,17 +4,19 @@ import { MapsAPILoader } from '@agm/core';
 import { Component, ElementRef, HostBinding, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IMyDateModel, IMyDpOptions } from 'mydatepicker';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 
 import { bounceTop } from '../../animations/bounce-edit-form';
+import { CanComponentDeactivate } from '../../interfaces/i.deactivate';
+import { IItemHttpService } from '../../interfaces/i.item.http';
 import { Item } from '../../models/item.model';
 import { Marker } from '../../models/marker.model';
 import { User } from '../../models/user.model';
+import { ModalService } from '../../services/modal.service';
 import { Store } from '../../services/store.service';
 import { Base } from '../base.component';
 import { styles } from './google-map.styles';
 import { markerConfig } from './marker-config';
-import { IItemHttpService } from '../../interfaces/i.item.http';
 
 declare var google: any;
 
@@ -24,7 +26,7 @@ declare var google: any;
   styleUrls: ['./edit-form.component.css'],
   animations: [ bounceTop() ],
 })
-export class EditFormComponent extends Base implements OnInit, OnDestroy {
+export class EditFormComponent extends Base implements OnInit, OnDestroy, CanComponentDeactivate {
 
   @HostBinding('@bounceTop') private animateProfile = true;
   @ViewChild('search') public search: ElementRef;
@@ -36,8 +38,6 @@ export class EditFormComponent extends Base implements OnInit, OnDestroy {
   public savedItem: Item;
   public googleMapStyles = styles;
   public item: Item;
-  public itemIdSubscription: Subscription;
-  public listIdSubscription: Subscription;
   private autocomplete;
 
   public dateModel: any = { date: { } };
@@ -54,6 +54,7 @@ export class EditFormComponent extends Base implements OnInit, OnDestroy {
     private readonly mapsAPILoader: MapsAPILoader,
     private readonly zone: NgZone,
     private readonly http: IItemHttpService,
+    private readonly modal: ModalService,
   ) { super(); }
 
 
@@ -69,6 +70,8 @@ export class EditFormComponent extends Base implements OnInit, OnDestroy {
     geocoder.geocode(request, (results, status) => {
       if (status === google.maps.GeocoderStatus.OK) {
         if (results[0] != null) {
+          if (!this.item.mapMarker) this.item.mapMarker = new Marker();
+
           this.item.mapMarker.address = results[0].formatted_address;
           this.item.mapMarker.latitude = results[0].geometry.location.lat();
           this.item.mapMarker.longitude = results[0].geometry.location.lng();
@@ -107,22 +110,7 @@ export class EditFormComponent extends Base implements OnInit, OnDestroy {
     const item = list.items.find(i => i.id === this.itemId);
 
     this.savedItem = item;
-    this.item = new Item(
-      item.id,
-      item.title,
-      item.description,
-      item.completed,
-      item.dueDate,
-      item.listId,
-      item.mapMarker,
-    );
-    if (item.mapMarker) {
-      this.item.mapMarker.address = item.mapMarker.address;
-      this.item.mapMarker.latitude = item.mapMarker.latitude;
-      this.item.mapMarker.longitude = item.mapMarker.longitude;
-    } else {
-      this.item.mapMarker = new Marker();
-    }
+    this.item = {...item};
 
     const date = this.savedItem.dueDate
       ? this.savedItem.dueDate.split('-')
@@ -138,8 +126,8 @@ export class EditFormComponent extends Base implements OnInit, OnDestroy {
       ? date[2]
       : (new Date()).getDate();
 
-      if (!this.item.dueDate) {
-        this.item.dueDate = `${this.dateModel.date.year}-${this.dateModel.date.month}-${this.dateModel.date.day}`;
+    if (!this.item.dueDate) {
+      this.item.dueDate = `${this.dateModel.date.year}-${this.dateModel.date.month}-${this.dateModel.date.day}`;
     }
   }
 
@@ -181,9 +169,9 @@ export class EditFormComponent extends Base implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
-    this.itemIdSubscription = this.route.parent.params
+    this.route.parent.params
       .subscribe(param => this.itemId = +param.itemId);
-    this.listIdSubscription = this.route.parent.parent.params
+    this.route.parent.parent.params
       .subscribe(param => this.listId = +param.listId);
     this.store.state$
       .takeUntil(this.componentDestroyed)
@@ -204,5 +192,15 @@ export class EditFormComponent extends Base implements OnInit, OnDestroy {
   public OnDestroy() {
     this.componentDestroyed.next();
     this.autocomplete.removeEventListener('place_changed', this.changeMapLocation);
+  }
+
+  public confirm(): Observable<boolean> | Promise<boolean> | boolean {
+    if (JSON.stringify(this.item) === JSON.stringify(this.savedItem)) {
+      return true;
+    }
+
+    const message = 'Are your sure that you want to close form';
+
+    return this.modal.open(message);
   }
 }

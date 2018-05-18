@@ -7,6 +7,7 @@ import { ListCreate } from '../../models/list-create.model';
 import { List as ListModel } from '../../models/list.model';
 import { ModalService } from '../../services/modal.service';
 import { Base } from '../base.component';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-list',
@@ -32,25 +33,37 @@ export class ListComponent extends Base implements OnInit {
   public titleToEdit: string = '';
 
   public constructor(
-    private listHttp: IListHttpService,
-    private modal: ModalService,
-    private router: Router,
+    private readonly listHttp: IListHttpService,
+    private readonly modal: ModalService,
+    private readonly router: Router,
+    private readonly notify: NotificationService,
   ) { super(); }
 
   public removeList(): void {
     if (this.list.id >= 0) {
-      const handler = () => {
-        this.listHttp.removeList(this.list.id)
-        .takeUntil(this.componentDestroyed)
-        .subscribe(
-          list => { this.deleteList.emit(list.id); this.router.navigate(['lists']); },
-          error => console.log(error)
-        );
-      };
       const message = 'Are you sure that you want to remove the category?';
 
-      this.modal.open(handler, message);
+      const sub = this.modal.open(message)
+      .subscribe(result => {
+        if (result) {
+          this.handler();
+        }
+        sub.unsubscribe();
+      });
     }
+  }
+
+  private handler(): void {
+    this.listHttp.removeList(this.list.id)
+    .takeUntil(this.componentDestroyed)
+    .subscribe(
+      list => {
+        this.deleteList.emit(list.id);
+        this.router.navigate(['lists']);
+        this.notify.addNotification('The list has been removed');
+      },
+      error => this.notify.addNotification('Can\'t remove the list')
+    );
   }
 
   public edit(): void {
@@ -74,7 +87,10 @@ export class ListComponent extends Base implements OnInit {
 
     this.listHttp.editList(list, this.list.id)
     .takeUntil(this.componentDestroyed)
-    .subscribe(l => this.editList.emit(l));
+    .subscribe(l => {
+      this.editList.emit(l);
+      this.notify.addNotification('The list has been edited');
+    });
   }
 
   public cancelEdit(): void {

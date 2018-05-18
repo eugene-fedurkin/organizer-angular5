@@ -11,6 +11,7 @@ export const userMock = {
           description: 'string',
           completed: false,
           dueDate: '2018-06-03',
+          mapMarker: null,
           listId: 1,
         },
         {
@@ -19,6 +20,7 @@ export const userMock = {
           description: 'string',
           completed: true,
           dueDate: '2018-06-03',
+          mapMarker: null,
           listId: 1,
         },
         {
@@ -28,9 +30,10 @@ export const userMock = {
           completed: false,
           dueDate: '2018-06-03',
           listId: 1,
-          marker: {
+          mapMarker: {
             address: '2132 Lacsa Ct, San Jose, CA 95116, США',
-            coordinates: { lat: 37.360809955200835, lng: -121.85150972698364 }
+            latitude: 37.360809955200835,
+            longitude: -121.85150972698364,
           }
         },
         {
@@ -39,6 +42,7 @@ export const userMock = {
           description: 'string',
           completed: true,
           dueDate: '2018-06-03',
+          mapMarker: null,
           listId: 1,
         },
       ]
@@ -53,6 +57,7 @@ export const userMock = {
           description: 'string',
           completed: false,
           dueDate: '2018-06-03',
+          mapMarker: null,
           listId: 2,
         },
         {
@@ -61,6 +66,7 @@ export const userMock = {
           description: 'string',
           completed: true,
           dueDate: '2018-06-03',
+          mapMarker: null,
           listId: 2,
         },
         {
@@ -69,6 +75,7 @@ export const userMock = {
           description: 'string',
           completed: false,
           dueDate: '2018-06-03',
+          mapMarker: null,
           listId: 2,
         },
         {
@@ -77,6 +84,7 @@ export const userMock = {
           description: 'string',
           completed: true,
           dueDate: '2018-06-03',
+          mapMarker: null,
           listId: 2,
         },
       ]

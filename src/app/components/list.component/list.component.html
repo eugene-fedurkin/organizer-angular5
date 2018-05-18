@@ -1,6 +1,6 @@
-<div (click)="openItems()" class="container" [class.disabled]="list.id < 0" @fade>
+<div (click)="openItems()" [class.activeList]="list.id === routerListId" class="container" [class.disabled]="list.id < 0" @fade>
   <span *ngIf="isEditMod">EDITING</span>
-  <input type="text" [(ngModel)]="titleToEdit" (keydown.esc)="cancelEdit()" (keyup.enter)="acceptChanges()" [disabled]="!isEditMod" #nameCategory />
+  <input type="text" [(ngModel)]="titleToEdit" (keydown.esc)="cancelEdit()" (keyup.enter)="acceptChanges()" (blur)="cancelEdit()" [disabled]="!isEditMod" #nameCategory />
   <div class="buttons">
     <img (click)="edit()" src="../../../assets/edit.svg" alt="edit" />
     <img (click)="removeList()" src="../../../assets/dustbin.svg" alt="remove" />

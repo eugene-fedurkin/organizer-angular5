@@ -7,6 +7,7 @@ import { ItemDetailsComponent } from './components/item-details.component/item-d
 import { ItemsComponent } from './components/items.component/items.component';
 import { ListsComponent } from './components/lists.component/lists.component';
 import { PageNotFoundComponent } from './components/page-not-found.component/page-not-found.component';
+import { FormAwayGuard } from './guards/form-away.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/auth', pathMatch: 'full' },
@@ -14,7 +15,7 @@ const routes: Routes = [
   { path: 'lists', component: ListsComponent, children: [
     { path: ':listId', component: ItemsComponent, children: [
       { path: ':itemId/details', component: ItemDetailsComponent, children: [
-        { path: 'edit-form', component: EditFormComponent },
+        { path: 'edit-form', component: EditFormComponent, canDeactivate: [FormAwayGuard] },
       ] },
     ] },
   ] },

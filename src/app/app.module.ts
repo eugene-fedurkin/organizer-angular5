@@ -37,6 +37,7 @@ import { ListHttpService } from './services/http/list.http.service';
 import { ItemHttpService } from './services/http/item.http.service';
 import { NotificationComponent } from './components/notification.component/notification.component';
 import { NotificationService } from './services/notification.service';
+import { FormAwayGuard } from './guards/form-away.guard';
 
 @NgModule({
   declarations: [
@@ -79,9 +80,10 @@ import { NotificationService } from './services/notification.service';
     NotificationService,
     MarkerManager,
     GoogleMapsAPIWrapper,
-    { provide: IUserHttpService, useClass: MockUserHttpService }, // mock: MockUserHttpService, original: UserHttpService
-    { provide: IListHttpService, useClass: MockListHttpService }, // mock: MockListHttpService, original: ListHttpService
-    { provide: IItemHttpService, useClass: MockItemHttpService }, // mock: MockItemHttpService, original: ItemHttpService
+    FormAwayGuard,
+    { provide: IUserHttpService, useClass: UserHttpService }, // mock: MockUserHttpService, original: UserHttpService
+    { provide: IListHttpService, useClass: ListHttpService }, // mock: MockListHttpService, original: ListHttpService
+    { provide: IItemHttpService, useClass: ItemHttpService }, // mock: MockItemHttpService, original: ItemHttpService
   ],
   bootstrap: [AppComponent]
 })

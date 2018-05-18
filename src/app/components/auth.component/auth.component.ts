@@ -60,7 +60,7 @@ export class AuthComponent extends Base implements OnInit {
           this.store.saveUser(user);
           this.router.navigate(['/lists']);
         },
-        error => { throw Error(error); },
+        error => this.notify.addNotification(error),
         () => this.loader.hide()
       );
   }
@@ -81,7 +81,7 @@ export class AuthComponent extends Base implements OnInit {
         this.router.navigate(['/lists']);
       },
       error => {
-        console.log(error); // TODO: notify user
+        this.notify.addNotification(error);
         this.signInForm.value.password = '';
       }
     );
@@ -103,8 +103,6 @@ export class AuthComponent extends Base implements OnInit {
       .subscribe(user => {
           this.store.saveUser(user);
           this.router.navigate(['/lists']);
-        },
-        error => {
         }
     );
   }
@@ -183,13 +181,13 @@ export class AuthComponent extends Base implements OnInit {
   }
 
   private pushMessage(errors: { [key: string]: any }): void {
-      const messages = Object.keys(errors)
+    const messages = Object.keys(errors)
       .map(key => this.validationMessages[key]);
 
-      if (this.authMod === 'Sign in') {
-        this.signInErrorMessages.messages.push(...messages);
-      } else {
-        this.signUpErrorMessages.messages.push(...messages);
-      }
+    if (this.authMod === 'Sign in') {
+      this.signInErrorMessages.messages.push(...messages);
+    } else {
+      this.signUpErrorMessages.messages.push(...messages);
+    }
   }
 }

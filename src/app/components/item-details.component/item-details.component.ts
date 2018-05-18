@@ -10,6 +10,7 @@ import { ModalService } from '../../services/modal.service';
 import { takeUntil } from 'rxjs/operator/takeUntil';
 import { IItemHttpService } from '../../interfaces/i.item.http';
 import { UnsavedEntitiesFactory } from '../../services/unsaved-entities-factory.service';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-item-details',
@@ -29,6 +30,7 @@ export class ItemDetailsComponent extends Base implements OnInit {
     private readonly modal: ModalService,
     private readonly itemService: IItemHttpService,
     private readonly factory: UnsavedEntitiesFactory,
+    private readonly notify: NotificationService,
   ) { super(); }
 
   private findItem(lists: List[], listId: number, itemId: number): void {
@@ -49,24 +51,37 @@ export class ItemDetailsComponent extends Base implements OnInit {
       .takeUntil(this.componentDestroyed)
       .subscribe(user => {
         if (user) {
-          const handler = () => {
-            const list = user.lists.find(l => l.id === this.listId);
-            const index = list.items.findIndex(i => i.id === this.itemId);
-
-            this.factory.removeItem(list.items[index]);
-
-            const subscr = this.itemService.removeItem(this.itemId)
-              .finally(() => subscr.unsubscribe())
-              .subscribe(
-                item => list.items.splice(index, 1),
-                err => this.factory.cancelRemove(list.items[index])
-              );
-            this.closeItem();
-          };
           const message = `Are you sure that you want to remove ${this.item.title}`;
-          this.modal.open(handler, message);
+          const sub = this.modal.open(message)
+            .subscribe(result => {
+              if (result) {
+                this.handler(user);
+              }
+              sub.unsubscribe();
+          });
         }
       });
+  }
+
+  private handler(user): void {
+      const list = user.lists.find(l => l.id === this.listId);
+      const index = list.items.findIndex(i => i.id === this.itemId);
+
+      this.factory.removeItem(list.items[index]);
+
+      const subscr = this.itemService.removeItem(this.itemId)
+        .finally(() => subscr.unsubscribe())
+        .subscribe(
+          item => {
+            list.items.splice(index, 1);
+            this.notify.addNotification('The item has been removed');
+          },
+          err => {
+            this.factory.cancelRemove(list.items[index]);
+            this.notify.addNotification('An error occurred while deleting the item');
+          }
+        );
+      this.closeItem();
   }
 
   ngOnInit() {
