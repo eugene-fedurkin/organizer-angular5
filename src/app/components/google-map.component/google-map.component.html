@@ -1,0 +1,30 @@
+<agm-map
+  [styles]="googleMapStyles"
+  [latitude]="mapMarker && mapMarker.latitude
+    ? mapMarker.latitude
+    : markerConfig.defaultLatitude"
+  [longitude]="mapMarker && mapMarker.longitude
+    ? mapMarker.longitude
+    : markerConfig.defaultLongitude"
+  [zoom]="markerConfig.zoom"
+  backgroundColor="none"
+  (mapReady)="mapReady($event)"
+>
+  <agm-marker
+    (dragEnd)="dragEnd($event)"
+    [latitude]="mapMarker && mapMarker.latitude
+      ? mapMarker.latitude
+      : markerConfig.defaultLatitude"
+    [longitude]="mapMarker && mapMarker.longitude
+      ? mapMarker.longitude
+      : markerConfig.defaultLongitude"
+    [iconUrl]="markerConfig.iconUrl"
+    [markerDraggable]="markerConfig.markerDraggable"
+  >
+    <agm-snazzy-info-window [maxWidth]="200" [closeWhenOthersOpen]="true" [isOpen]="!!mapMarker?.address">
+      <ng-template>
+        {{ mapMarker?.address || "Move the marker to a specific address" }}
+      </ng-template>
+  </agm-snazzy-info-window>
+  </agm-marker>
+</agm-map>

@@ -38,6 +38,7 @@ import { ItemHttpService } from './services/http/item.http.service';
 import { NotificationComponent } from './components/notification.component/notification.component';
 import { NotificationService } from './services/notification.service';
 import { FormAwayGuard } from './guards/form-away.guard';
+import { GoogleMapComponent } from './components/google-map.component/google-map.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { FormAwayGuard } from './guards/form-away.guard';
     EditFormComponent,
     PageNotFoundComponent,
     NotificationComponent,
+    GoogleMapComponent,
   ],
   imports: [
     BrowserModule,

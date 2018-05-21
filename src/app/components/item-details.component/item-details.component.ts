@@ -33,22 +33,13 @@ export class ItemDetailsComponent extends Base implements OnInit {
     private readonly notify: NotificationService,
   ) { super(); }
 
-  private findItem(lists: List[], listId: number, itemId: number): void {
-    const list = lists.find(l => l.id === listId);
-    this.item = list.items.find(item => item.id === itemId);
-  }
-
   public openEditForm(): void {
     this.router.navigate(['lists', this.listId, this.itemId, 'details', 'edit-form']);
   }
 
-  private closeItem(): void {
-    this.router.navigate(['lists', this.listId]);
-  }
-
   public deleteItem(): void {
     this.store.state$
-      .takeUntil(this.componentDestroyed)
+    .takeUntil(this.componentDestroyed)
       .subscribe(user => {
         if (user) {
           const message = `Are you sure that you want to remove ${this.item.title}`;
@@ -63,9 +54,18 @@ export class ItemDetailsComponent extends Base implements OnInit {
       });
   }
 
+  private initializeItem(lists: List[], listId: number, itemId: number): void {
+    const list = lists.find(l => l.id === listId);
+    this.item = list.items.find(item => item.id === itemId);
+  }
+
+  private closeItem(): void {
+    this.router.navigate(['lists', this.listId]);
+  }
+
   private handler(user): void {
-      const list = user.lists.find(l => l.id === this.listId);
-      const index = list.items.findIndex(i => i.id === this.itemId);
+    const list = user.lists.find(l => l.id === this.listId);
+    const index = list.items.findIndex(i => i.id === this.itemId);
 
       this.factory.removeItem(list.items[index]);
 
@@ -84,7 +84,7 @@ export class ItemDetailsComponent extends Base implements OnInit {
       this.closeItem();
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.route.parent.params
       .subscribe(params => this.listId = +params.listId );
     this.route.params
@@ -94,7 +94,7 @@ export class ItemDetailsComponent extends Base implements OnInit {
         .takeUntil(this.componentDestroyed)
         .subscribe(user => {
           if (user) {
-            this.findItem(user.lists, this.listId, this.itemId);
+            this.initializeItem(user.lists, this.listId, this.itemId);
           }
         });
       });

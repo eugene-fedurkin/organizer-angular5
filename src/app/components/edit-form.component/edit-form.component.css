@@ -97,16 +97,11 @@ button:active {
   background: #FAEFD4;
   color: black;
 }
-agm-map {
-  height: 383px;
-}
 .inline-flex {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
-
-
 div.cntr {
   display: inline-block;
   position: relative;

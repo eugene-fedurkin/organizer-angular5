@@ -29,36 +29,9 @@
       </form>
       <input placeholder="Search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="search" #search>
     </div>
-    <agm-map
-      [styles]="googleMapStyles"
-      [latitude]="item.mapMarker && item.mapMarker.latitude
-        ? item.mapMarker.latitude
-        : markerConfig.latitude"
-      [longitude]="item.mapMarker && item.mapMarker.longitude
-        ? item.mapMarker.longitude
-        : markerConfig.longitude"
-      [zoom]="markerConfig.zoom"
-      backgroundColor="none"
-      (mapReady)="mapReady($event)"
-      #map
-    >
-      <agm-marker
-        (dragEnd)="dragEnd($event)"
-        [latitude]="item.mapMarker && item.mapMarker.latitude
-          ? item.mapMarker.latitude
-          : markerConfig.latitude"
-        [longitude]="item.mapMarker && item.mapMarker.longitude
-          ? item.mapMarker.longitude
-          : markerConfig.longitude"
-        [iconUrl]="markerConfig.iconUrl"
-        [markerDraggable]="markerConfig.markerDraggable"
-      >
-        <agm-snazzy-info-window [maxWidth]="200" [closeWhenOthersOpen]="true" [isOpen]="!!item.mapMarker?.address">
-          <ng-template>
-            {{item.mapMarker?.address || "Move the marker to a specific address"}}
-          </ng-template>
-        </agm-snazzy-info-window>
-      </agm-marker>
-    </agm-map>
+    <app-google-map
+      (saveMarkerData)="saveMarkerData($event)"
+      [mapMarker]="item.mapMarker"
+      [searchElement]="search"></app-google-map>
   </div>
 </div>
