@@ -1,0 +1,44 @@
+<form (ngSubmit)="signUp()" [formGroup]="signUpForm">
+  <h3>Sign up</h3>
+  <div
+    formGroupName="emailGroup"
+    [ngClass]="{'error': signUpForm.get('emailGroup').touched && !signUpForm.get('emailGroup').valid} && signUpForm.get('emailGroup').errors">
+    <span>
+      <input
+        id="signUpEmail"
+        type="text"
+        placeholder="Email"
+        [ngClass]="{'error': signUpForm.get('emailGroup.email').touched && !signUpForm.get('emailGroup.email').valid}"
+        formControlName="email"
+        autocomplete="off" />
+      <label for="signUpEmail"></label>
+    </span>
+    <span>
+      <input
+        id="emailConfirm"
+        type="text"
+        placeholder="Confirm email"
+        formControlName="emailConfirm"
+        autocomplete="off" />
+      <label for="emailConfirm"></label>
+    </span>
+  </div>
+  <span>
+    <input
+      id="signUpPassword"
+      type="password"
+      placeholder="Password"
+      [ngClass]="{'error': signUpForm.get('password').touched && !signUpForm.get('password').valid}"
+      formControlName="password"
+      autocomplete="off" />
+    <label for="signUpPassword"></label>
+  </span>
+  <button type="submit" [disabled]="signUpErrorMessages.isValid">Create an account</button>
+  <div class="toggler">Are you have an account? <span (click)="toggleMod()">Sign in</span></div>
+  <div *ngFor="let message of signUpErrorMessages.messages" class="validationmessage">
+    <div>
+      <img src="../../../assets/warning-sign.svg" alt="warning" />
+      {{message}}
+    </div>
+  </div>
+</form>

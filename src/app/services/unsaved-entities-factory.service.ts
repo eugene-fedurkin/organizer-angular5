@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { ItemCreate } from '../models/item-create';
+import { ItemCreated } from '../models/item-create';
 import { Item } from '../models/item.model';
 import { ListCreate } from '../models/list-create.model';
 import { List } from '../models/list.model';
@@ -12,6 +12,7 @@ export class UnsavedEntitiesFactory {
   private listId: number = 0;
   private itemId: number = 0;
   private itemIdToRemove: TemporaryIdInfo[] = [];
+  private storeToItemUpdate: { initialItem: Item, unsavedItem: Item }[] = [];
 
   public createList(listToCreate: ListCreate): List {
     const list = new List(--this.listId, listToCreate.title, null);
@@ -19,11 +20,13 @@ export class UnsavedEntitiesFactory {
     return list;
   }
 
-  public createItem(itemCreate: ItemCreate): Item {
-    const item = new Item(--this.itemId, itemCreate.title);
-    item.listId = itemCreate.listId;
+  public createItem(item: Item): Item {
+    const newItem = { ...item, id: --this.itemId, title: item.title };
+    newItem.mapMarker = item.mapMarker
+      ? { ...item.mapMarker }
+      : null;
 
-    return item;
+    return newItem;
   }
 
   public removeItem(item: Item): Item {
@@ -31,6 +34,7 @@ export class UnsavedEntitiesFactory {
 
     this.itemIdToRemove.push(temporaryIdInfo);
     item.id = this.itemId;
+
     return item;
   }
 
@@ -39,5 +43,21 @@ export class UnsavedEntitiesFactory {
     item.id = this.itemIdToRemove[index].actualId;
 
     this.itemIdToRemove.splice(index, 1);
+  }
+
+  public saveTemporaryItem(initialItem: Item, unsavedItem: Item): void {
+    this.storeToItemUpdate.push({ initialItem, unsavedItem });
+  }
+
+  public getCurrentItem(id: number): Item {
+    const itemInfo = this.storeToItemUpdate.find(i => i.unsavedItem.id === id);
+
+    return itemInfo.initialItem;
+  }
+
+  public removeTemporaryItem(unsavedId: number) {
+    const index = this.storeToItemUpdate.findIndex(i => i.unsavedItem.id === unsavedId);
+
+    this.storeToItemUpdate.splice(index, 1);
   }
 }

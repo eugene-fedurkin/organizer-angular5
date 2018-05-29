@@ -7,7 +7,6 @@ import { Observable } from 'rxjs/observable';
 @Injectable()
 export class FormAwayGuard implements CanDeactivate<CanComponentDeactivate> {
   canDeactivate(component: CanComponentDeactivate): Observable<boolean> | Promise<boolean> | boolean {
-    console.log('123');
     return component.confirm();
   }
 }

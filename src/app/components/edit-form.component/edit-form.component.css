@@ -13,12 +13,13 @@
 .container {
   display: flex;
   flex-direction: column;
+  font-family: 'Quicksand', sans-serif;
   width: calc(80% - 60px);
   height: calc(80vh - 60px);
   border-radius: 6px;
   padding: 30px;
   background: rgba(0, 0, 0, 0.8);
-  font-family: 'Quicksand', sans-serif;
+  overflow-x: hidden;
 }
 form, .search {
   width: 275px;
@@ -92,10 +93,19 @@ button {
   cursor: pointer;
   border-radius: 3px;
   outline: none;
+  transition: opacity .3s linear;
 }
 button:active {
   background: #FAEFD4;
   color: black;
+}
+button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+button:disabled:active {
+  background: none;
+  color: #FAEFD4;
 }
 .inline-flex {
   display: flex;

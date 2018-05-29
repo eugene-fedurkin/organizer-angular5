@@ -1,0 +1,31 @@
+<form (ngSubmit)="signIn()" class="front" [formGroup]="signInForm">
+  <h3>Sign In</h3>
+  <span>
+    <input
+      id="signInEmail"
+      type="text"
+      [ngClass]="{'error': signInForm.get('email').touched && !signInForm.get('email').valid}"
+      placeholder="Email"
+      autocomplete="off"
+      formControlName="email" />
+    <label for="signInEmail"></label>
+  </span>
+  <span>
+    <input
+      id="signInPassword"
+      type="password"
+      placeholder="Password"
+      [ngClass]="{'error': signInForm.get('password').touched && !signInForm.get('password').valid}"
+      formControlName="password"
+      autocomplete="off" />
+    <label for="signInPassword"></label>
+  </span>
+  <button type="submit" [disabled]="signInErrorMessages.isValid">Sign in</button>
+  <div class="toggler">New to Organizer? <span (click)="toggleMod()">Sign up</span></div>
+  <div *ngFor="let message of signInErrorMessages.messages" class="toggler">
+    <div>
+      <img src="../../../assets/warning-sign.svg" alt="warning" />
+      {{message}}
+    </div>
+  </div>
+</form>

@@ -6,20 +6,25 @@
       </h2>
     </div>
     <div class="content">
-        <div>
-          {{ item.description }}
+      <div *ngIf="item.mapMarker?.address; else addresPlaceHolder" class="address" appMapTooltip>
+        {{ item.mapMarker.address | capitalize }}
+        <app-google-map [mapMarker]="item.mapMarker" [mapZoom]="14" class="mapTooltip"></app-google-map>
+      </div>
+      <ng-template #addresPlaceHolder>
+        <div class="address">
+          You dont select an address
         </div>
-        <div>{{ item.mapMarker?.address || 'You dont select an address' }}</div>
-        <div class="state">State: <span>{{ item.completed ? 'done' : 'not done' }}</span></div>
-        <div class="cntr">
-          <input type="checkbox" id="item" [checked]="item.completed" disabled />
-          <label for="item" class="cbx"></label>
-          <label for="item" class="lbl"></label>
-        </div>
-        <div>{{ item?.dueDate | date }}</div>
+      </ng-template>
+      <div class="description">
+        {{ item.description }}
+      </div>
+      <div class="state">State: <span>{{ item.completed ? 'done' : 'not done' }}</span></div>
+      <div class="date">{{ item?.dueDate | date }}</div>
+      <div class="btnContainer">
+        <button (click)="openEditForm()" [disabled]="item.id < 0">EDIT ITEM</button>
+        <button (click)="deleteItem()" [disabled]="item.id < 0">DELETE ITEM</button>
+      </div>
     </div>
-    <button (click)="openEditForm()">EDIT ITEM</button>
-    <button (click)="deleteItem()">DELETE ITEM</button>
   </div>
   <router-outlet></router-outlet>
 </div>

@@ -1,10 +1,13 @@
-<div (click)="openDetails()" class="container" [class.disabled]="item.id < 0">
+<div draggable="true" [dragData]="item" (click)="openDetails()" class="container" [class.disabled]="item.id < 0">
   <span class="title">
     {{item.title}}
   </span>
+  <div class="savingLoader" [class.active]="item.id < 0">
+    SAVING
+  </div>
   <div class="cntr">
-      <input type="checkbox" id="{{item.id}}" [checked]="item.completed" disabled />
-      <label for="{{item.id}}" class="cbx"></label>
-      <label for="{{item.id}}" class="lbl"></label>
+    <input type="checkbox" id="{{item.id}}" [checked]="item.completed" disabled />
+    <label for="{{item.id}}" class="cbx"></label>
+    <label for="{{item.id}}" class="lbl"></label>
   </div>
 </div>

@@ -1,26 +1,26 @@
-<div class="outside">
+<div class="outside" (click)="closeFormOutsideClick($event)">
   <div class="container">
     <h3>{{savedItem?.title}}</h3>
     <div class="upperPanel">
       <div>
         <span>Done </span>
         <div class="cntr" *ngIf="item">
-          <input [(ngModel)]="item.completed" type="checkbox" id="complete" />
+          <input [(ngModel)]="item.completed" type="checkbox" id="complete" autocomplete="false" />
           <label for="complete" class="cbx"></label>
           <label for="complete" class="lbl"></label>
         </div>
       </div>
       <div class="btns">
-        <button (click)="saveChanges()">SAVE CHANGES</button>
+        <button (click)="saveChanges()" [disabled]="!wasChanges()">SAVE CHANGES</button>
         <button (click)="closeForm()">CLOSE</button>
       </div>
     </div>
     <span class="titleContainer">
-      <input type="text" id="title" [(ngModel)]="item.title" placeholder="Title" />
+      <input type="text" id="title" [(ngModel)]="item.title" placeholder="Title" autocomplete="false" />
       <label for="title"></label>
     </span>
     <span class="descriptionContainer">
-      <textarea [(ngModel)]="item.description" id="description" placeholder="Description"></textarea>
+      <textarea [(ngModel)]="item.description" id="description" placeholder="Description" autocomplete="false"></textarea>
       <label for="description"></label>
     </span>
     <div class="inline-flex">
@@ -29,9 +29,11 @@
       </form>
       <input placeholder="Search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="search" #search>
     </div>
-    <app-google-map
+    <!-- <app-google-map
       (saveMarkerData)="saveMarkerData($event)"
       [mapMarker]="item.mapMarker"
-      [searchElement]="search"></app-google-map>
+      [searchElement]="search"
+      [markerDraggable]="true">
+    </app-google-map> -->
   </div>
 </div>

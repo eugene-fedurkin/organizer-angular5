@@ -39,6 +39,11 @@ import { NotificationComponent } from './components/notification.component/notif
 import { NotificationService } from './services/notification.service';
 import { FormAwayGuard } from './guards/form-away.guard';
 import { GoogleMapComponent } from './components/google-map.component/google-map.component';
+import { SignInComponent } from './components/sign-in.component/sign-in.component';
+import { SignUpComponent } from './components/sign-up.component/sign-up.component';
+import { CapitalizePipe } from './pipes/capitilize.pipe';
+import { MapTooltipDirective } from './directives/map-tooltip.directive';
+import { NgDragDropModule } from 'ng-drag-drop';
 
 @NgModule({
   declarations: [
@@ -58,6 +63,10 @@ import { GoogleMapComponent } from './components/google-map.component/google-map
     PageNotFoundComponent,
     NotificationComponent,
     GoogleMapComponent,
+    SignInComponent,
+    SignUpComponent,
+    CapitalizePipe,
+    MapTooltipDirective
   ],
   imports: [
     BrowserModule,
@@ -72,7 +81,8 @@ import { GoogleMapComponent } from './components/google-map.component/google-map
       language: 'ru',
       libraries: ['places'],
     }),
-    AgmSnazzyInfoWindowModule
+    NgDragDropModule.forRoot(),
+    AgmSnazzyInfoWindowModule,
   ],
   providers: [
     Store,
@@ -83,9 +93,9 @@ import { GoogleMapComponent } from './components/google-map.component/google-map
     MarkerManager,
     GoogleMapsAPIWrapper,
     FormAwayGuard,
-    { provide: IUserHttpService, useClass: UserHttpService }, // mock: MockUserHttpService, original: UserHttpService
-    { provide: IListHttpService, useClass: ListHttpService }, // mock: MockListHttpService, original: ListHttpService
-    { provide: IItemHttpService, useClass: ItemHttpService }, // mock: MockItemHttpService, original: ItemHttpService
+    { provide: IUserHttpService, useClass: MockUserHttpService }, // mock: MockUserHttpService, original: UserHttpService
+    { provide: IListHttpService, useClass: MockListHttpService }, // mock: MockListHttpService, original: ListHttpService
+    { provide: IItemHttpService, useClass: MockItemHttpService }, // mock: MockItemHttpService, original: ItemHttpService
   ],
   bootstrap: [AppComponent]
 })

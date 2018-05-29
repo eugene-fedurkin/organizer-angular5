@@ -24,18 +24,7 @@ import { validationMessages } from './validation-masseges';
 })
 export class AuthComponent extends Base implements OnInit {
 
-  public signInErrorMessages = {
-    messages: [],
-    isValid: false,
-  };
-  public signUpErrorMessages = {
-    messages: [],
-    isValid: false,
-  };
-  private validationMessages = validationMessages;
   public authMod: string = 'Sign in';
-  public signInForm: FormGroup;
-  public signUpForm: FormGroup;
 
   public constructor(
     private readonly httpService: IUserHttpService,
@@ -48,11 +37,11 @@ export class AuthComponent extends Base implements OnInit {
     super();
   }
 
-  public signUp(): void {
+  public signUp(signUpForm: FormGroup): void {
     this.loader.show();
     const credentials = new Credentials(
-      this.signUpForm.value.email,
-      this.signUpForm.value.password);
+      signUpForm.value.email,
+      signUpForm.value.password);
 
     this.httpService.registerUser(credentials)
       .takeUntil(this.componentDestroyed)
@@ -65,24 +54,31 @@ export class AuthComponent extends Base implements OnInit {
       );
   }
 
-  public signIn(): void {
+  public signIn(signInForm: FormGroup): void {
     this.loader.show();
     const credentials = new Credentials(
-      this.signInForm.value.email,
-      this.signInForm.value.password);
+      signInForm.value.email,
+      signInForm.value.password
+    );
 
     this.httpService.signIn(credentials)
       .takeUntil(this.componentDestroyed)
+      .finally(() => this.loader.hide())
       .subscribe(resp => {
         this.httpService.getCurrentUserVerbose()
           .takeUntil(this.componentDestroyed)
-          .finally(() => this.loader.hide())
           .subscribe(user => this.store.saveUser(user));
         this.router.navigate(['/lists']);
       },
       error => {
-        this.notify.addNotification(error);
-        this.signInForm.value.password = '';
+        let message;
+        if (error.status === 403) {
+          message = 'Uncorrect email or password';
+        } else {
+          message = error.message;
+        }
+        this.notify.addNotification(message);
+        // this.signInForm.value.password = '';
       }
     );
   }
@@ -94,8 +90,6 @@ export class AuthComponent extends Base implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.createForm();
-    this.watchChanges();
     this.loader.show();
     this.httpService.getCurrentUserVerbose()
       .takeUntil(this.componentDestroyed)
@@ -105,89 +99,5 @@ export class AuthComponent extends Base implements OnInit {
           this.router.navigate(['/lists']);
         }
     );
-  }
-
-  private createForm(): void {
-    this.signInForm = this.fb.group({
-      email: ['', Validators.email],
-      password: ['', { validators: [ CustomValidator.passwordRequired, CustomValidator.passwordMinLength(6) ]}],
-    });
-
-    this.signUpForm = this.fb.group({
-      emailGroup: this.fb.group({
-        email: ['', { validators: [ Validators.required, Validators.email ]}],
-        emailConfirm: '',
-      },
-    { validator: CustomValidator.emailMatch }),
-      password: ['', { validators: [ CustomValidator.passwordRequired, CustomValidator.passwordMinLength(6) ]}],
-    });
-  }
-
-  private watchChanges(): void {
-    this.signUpForm.valueChanges
-      .map(() => this.setToInvalid())
-      .pipe(debounceTime(700))
-      .takeUntil(this.componentDestroyed)
-      .subscribe(value => this.setMessageToSignUpForm(this.signUpForm));
-
-    this.signInForm.valueChanges
-      .map(() => this.setToInvalid())
-      .pipe(debounceTime(700))
-      .takeUntil(this.componentDestroyed)
-      .subscribe(value => this.setMessageToSignInForm(this.signInForm));
-  }
-
-  private setToInvalid(): void {
-    this.signInErrorMessages.isValid = true;
-    this.signUpErrorMessages.isValid = true;
-  }
-
-  private setMessageToSignUpForm(c: FormGroup): void {
-    this.signUpErrorMessages.messages = [];
-    const emailGroup = c.get('emailGroup');
-    const email = c.get('emailGroup.email');
-    const emailConfirm = c.get('emailGroup.emailConfirm');
-    const password = c.get('password');
-
-    if ((email.dirty || email.touched) && email.errors) { // email messages
-      this.pushMessage(email.errors);
-    }
-    if ((emailConfirm.dirty || emailConfirm.touched) && emailConfirm.errors) { // email confirm messages
-      this.pushMessage(emailConfirm.errors);
-    }
-    if ((emailGroup.dirty || emailGroup.touched) && emailGroup.errors) { // email and email confirm messages
-      this.pushMessage(emailGroup.errors);
-    }
-    if ((password.dirty || password.touched) && password.errors) { // password messages
-      this.pushMessage(password.errors);
-    }
-
-    this.signUpErrorMessages.isValid = !!this.signUpErrorMessages.messages.length;
-  }
-
-  private setMessageToSignInForm(c: FormGroup): void {
-    this.signInErrorMessages.messages = [];
-    const email = c.get('email');
-    const password = c.get('password');
-
-    if ((email.dirty || email.touched) && email.errors) { // email messages
-      this.pushMessage(email.errors);
-    }
-    if ((password.dirty || password.touched) && password.errors) { // password messages
-      this.pushMessage(password.errors);
-    }
-
-    this.signInErrorMessages.isValid = !!this.signInErrorMessages.messages.length;
-  }
-
-  private pushMessage(errors: { [key: string]: any }): void {
-    const messages = Object.keys(errors)
-      .map(key => this.validationMessages[key]);
-
-    if (this.authMod === 'Sign in') {
-      this.signInErrorMessages.messages.push(...messages);
-    } else {
-      this.signUpErrorMessages.messages.push(...messages);
-    }
   }
 }

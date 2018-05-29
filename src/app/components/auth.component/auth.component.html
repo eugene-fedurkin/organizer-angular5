@@ -1,81 +1,8 @@
 <div class="outside">
   <div class="container">
     <div class="formField" [class.flipped]="authMod === 'Sign up'">
-      <form (ngSubmit)="signIn()" class="front" [formGroup]="signInForm">
-        <h3>Sign In</h3>
-        <span>
-          <input
-            id="signInEmail"
-            type="text"
-            [ngClass]="{'error': signInForm.get('email').touched && !signInForm.get('email').valid}"
-            placeholder="Email"
-            autocomplete="off"
-            formControlName="email" />
-          <label for="signInEmail"></label>
-        </span>
-        <span>
-          <input
-            id="signInPassword"
-            type="password"
-            placeholder="Password"
-            [ngClass]="{'error': signInForm.get('password').touched && !signInForm.get('password').valid}"
-            formControlName="password"
-            autocomplete="off" />
-          <label for="signInPassword"></label>
-        </span>
-        <button type="submit" [disabled]="signInErrorMessages.isValid">Sign in</button>
-        <div class="toggler">New to Organizer? <span (click)="toggleMod()">Sign up</span></div>
-        <div *ngFor="let message of signInErrorMessages.messages" class="toggler">
-          <div>
-            <img src="../../../assets/warning-sign.svg" alt="warning" />
-            {{message}}
-          </div>
-        </div>
-      </form>
-      <form (ngSubmit)="signUp()" class="back" [formGroup]="signUpForm">
-        <h3>Sign up</h3>
-        <div
-          formGroupName="emailGroup"
-          [ngClass]="{'error': signUpForm.get('emailGroup').touched && !signUpForm.get('emailGroup').valid} && signUpForm.get('emailGroup').errors">
-          <span>
-            <input
-              id="signUpEmail"
-              type="text"
-              placeholder="Email"
-              [ngClass]="{'error': signUpForm.get('emailGroup.email').touched && !signUpForm.get('emailGroup.email').valid}"
-              formControlName="email"
-              autocomplete="off" />
-            <label for="signUpEmail"></label>
-          </span>
-          <span>
-            <input
-              id="emailConfirm"
-              type="text"
-              placeholder="Confirm email"
-              formControlName="emailConfirm"
-              autocomplete="off" />
-            <label for="emailConfirm"></label>
-          </span>
-        </div>
-        <span>
-          <input
-            id="signUpPassword"
-            type="password"
-            placeholder="Password"
-            [ngClass]="{'error': signUpForm.get('password').touched && !signUpForm.get('password').valid}"
-            formControlName="password"
-            autocomplete="off" />
-          <label for="signUpPassword"></label>
-        </span>
-        <button type="submit" [disabled]="signUpErrorMessages.isValid">Create an account</button>
-        <div class="toggler">Are you have an account? <span (click)="toggleMod()">Sign in</span></div>
-        <div *ngFor="let message of signUpErrorMessages.messages" class="validationmessage">
-          <div>
-            <img src="../../../assets/warning-sign.svg" alt="warning" />
-            {{message}}
-          </div>
-        </div>
-      </form>
+      <app-sign-in (toggleModEvent)="toggleMod()" class="front" (signInEvent)="signIn($event)"></app-sign-in>
+      <app-sign-up (toggleEvent)="toggleMod()" (signUpEvent)="signUp($event)" class="back"></app-sign-up>
     </div>
   </div>
 </div>

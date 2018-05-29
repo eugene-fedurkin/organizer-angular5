@@ -6,7 +6,7 @@ import { Base } from '../base.component';
 import { List } from '../../models/list.model';
 import { Item } from '../../models/item.model';
 import { UnsavedEntitiesFactory } from '../../services/unsaved-entities-factory.service';
-import { ItemCreate } from '../../models/item-create';
+import { ItemCreated } from '../../models/item-create';
 import { IItemHttpService } from '../../interfaces/i.item.http';
 
 
@@ -37,11 +37,12 @@ export class ItemsComponent extends Base implements OnInit, OnDestroy {
   }
 
   public addItem(title: string): void {
-    const itemCreate = new ItemCreate(title, this.list.id);
-    const item = this.queue.createItem(itemCreate);
+    const itemCreated = new ItemCreated(title, this.list.id);
+    const itemEx = new Item(null, title, null, null, null, this.list.id);
+    const item = this.queue.createItem(itemEx);
     this.store.saveItem(item);
 
-    this.http.createItem(itemCreate)
+    this.http.createItem(itemCreated)
     .takeUntil(this.componentDestroyed)
     .subscribe(newItem => this.store.updateItem(newItem, item.id));
   }

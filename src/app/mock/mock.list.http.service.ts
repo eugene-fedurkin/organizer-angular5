@@ -25,6 +25,6 @@ export class MockListHttpService implements IListHttpService {
 
   public editList(list: ListCreate, id: number): Observable<List> {
     const newlist = new List(id, list.title, []);
-    return Observable.from([newlist]);
+    return Observable.from([newlist]).delay(0);
   }
 }

@@ -5,5 +5,4 @@ export const markerConfig = {
   defaultLongitude: 27.56138886970848,
   iconUrl: '../../../assets/marker.png',
   zoom: 14,
-  markerDraggable: true,
 };

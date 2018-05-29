@@ -1,10 +1,10 @@
-import { Component, Input, OnInit, OnDestroy, NgZone, ElementRef, EventEmitter, Output } from '@angular/core';
+import { MapsAPILoader } from '@agm/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, NgZone, OnInit, Output, HostBinding } from '@angular/core';
 
 import { Marker } from '../../models/marker.model';
+import { NotificationService } from '../../services/notification.service';
 import { styles } from './google-map.styles';
 import { markerConfig } from './marker-config';
-import { MapsAPILoader } from '@agm/core';
-import { NotificationService } from '../../services/notification.service';
 
 declare const google: any;
 
@@ -12,6 +12,7 @@ declare const google: any;
   selector: 'app-google-map',
   templateUrl: './google-map.component.html',
   styleUrls: ['./google-map.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GoogleMapComponent implements OnInit {
 
@@ -21,14 +22,16 @@ export class GoogleMapComponent implements OnInit {
     private readonly notify: NotificationService,
   ) {}
 
+  @Input() public markerDraggable: boolean;
+  @Input() public mapZoom: number;
   @Input() public mapMarker: Marker;
   @Input() public searchElement: ElementRef;
-  @Output() public saveMarkerData = new EventEmitter();
+  @Output() public saveMarkerData = new EventEmitter<Marker>();
 
   public markerConfig = markerConfig;
-  private autocomplete;
+  private autocomplete: any;
   public googleMapStyles = styles;
-  private mapRef;
+  private mapRef: any;
 
   public mapReady(mapRef) {
     this.mapRef = mapRef;
@@ -60,7 +63,7 @@ export class GoogleMapComponent implements OnInit {
       const place = this.autocomplete.getPlace();
 
       if (!place.geometry) {
-        // this.notify.addNotification(`No details available for input: ${place.name}`);
+        this.notify.addNotification(`No details available for input: ${place.name}`);
         return;
       }
       this.mapMarker.latitude = place.geometry.location.lat();
@@ -79,12 +82,16 @@ export class GoogleMapComponent implements OnInit {
   public ngOnInit(): void {
     this.mapsAPILoader.load()
       .then(() => {
-        this.autocomplete = new google.maps.places.Autocomplete(this.searchElement);
-        this.autocomplete.addListener('place_changed', () => this.changeMapLocation());
+        if (this.searchElement) {
+          this.autocomplete = new google.maps.places.Autocomplete(this.searchElement);
+          this.autocomplete.addListener('place_changed', () => this.changeMapLocation());
+        }
       });
   }
 
   public OnDestroy(): void {
-    this.autocomplete.removeEventListener('place_changed', this.changeMapLocation); // TODO: need?
+    if (this.searchElement) {
+      this.autocomplete.removeEventListener('place_changed', this.changeMapLocation); // TODO: need?
+    }
   }
 }

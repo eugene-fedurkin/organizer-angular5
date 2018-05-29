@@ -3,8 +3,6 @@ import { Observable } from 'rxjs/observable';
 import { Subject } from 'rxjs/Subject';
 import { PublicFeature } from '@angular/core/src/render3';
 
-type Handler = () => void;
-
 @Injectable()
 export class ModalService {
 

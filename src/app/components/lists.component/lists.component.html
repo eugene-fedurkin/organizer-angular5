@@ -4,7 +4,7 @@
       <app-add-input (addEvent)="addList($event)" [message]="'Title of a category'"></app-add-input>
     </span>
     <div *ngFor="let list of lists" @fadeOut>
-      <app-list class="item" [list]="list" (editList)="editList($event)" (deleteList)="removeList($event)" (openList)="openList($event)"></app-list>
+      <app-list draggable class="item" [list]="list" (changeListToItem)="changeListToItem($event)" (editList)="editList($event)" (deleteList)="removeList($event)" (openList)="openList($event)"></app-list>
     </div>
   </div>
 </section>

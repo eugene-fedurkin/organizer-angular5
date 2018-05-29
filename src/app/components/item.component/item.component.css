@@ -3,6 +3,7 @@
 }
 .container {
   display: grid;
+  position: relative;
   grid-template-columns: repeat(2, 1fr);
   background: rgba(255,255,255,0.15);
   border-radius: 6px;
@@ -72,7 +73,31 @@ input:checked ~ .cbx:after {
   opacity: 1;
   transform: rotate(45deg) scale(1);
 }
-  
+.savingLoader {
+  position: absolute;
+  font-size: 9px;
+  letter-spacing: 1px;
+  font-style: italic;
+  right: 7px;
+  display: none;
+  opacity: 0;
+  animation: fade 2s linear infinite;
+}
+.active {
+  display: block;
+
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
 @keyframes jelly {
   from {
     transform: scale(1, 1);

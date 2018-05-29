@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { IItemHttpService } from '../../interfaces/i.item.http';
-import { ItemCreate } from '../../models/item-create';
+import { ItemCreated } from '../../models/item-create';
 import { Item } from '../../models/item.model';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class ItemHttpService implements IItemHttpService {
 
   public constructor(private readonly http: HttpClient) {}
 
-  public createItem(item: ItemCreate): Observable<Item> {
+  public createItem(item: ItemCreated): Observable<Item> {
     return this.http.post<Item>(this.url, item, this.options);
   }
 

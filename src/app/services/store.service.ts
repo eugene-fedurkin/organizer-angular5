@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Item } from '../models/item.model';
 import { List } from '../models/list.model';
 import { User } from '../models/user.model';
+import { CapitalizePipe } from '../pipes/capitilize.pipe';
 
 @Injectable()
 export class Store {
@@ -49,7 +50,7 @@ export class Store {
 
   public editList(title: string, id: number): void {
     const list = this.user.lists.find(l => l.id === id);
-    list.title = title;
+    list.title = new CapitalizePipe().transform(title);
 
     this.userSubject.next(this.user);
   }

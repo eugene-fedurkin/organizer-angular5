@@ -1,13 +1,15 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Router } from '@angular/router';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { DropEvent } from 'ng-drag-drop';
 
 import { IListHttpService } from '../../interfaces/i.list.http';
 import { ListCreate } from '../../models/list-create.model';
 import { List as ListModel } from '../../models/list.model';
+import { CapitalizePipe } from '../../pipes/capitilize.pipe';
 import { ModalService } from '../../services/modal.service';
-import { Base } from '../base.component';
 import { NotificationService } from '../../services/notification.service';
+import { Base } from '../base.component';
 
 @Component({
   selector: 'app-list',
@@ -29,6 +31,7 @@ export class ListComponent extends Base implements OnInit {
   @Output() public deleteList = new EventEmitter();
   @Output() public editList = new EventEmitter();
   @Output() public openList = new EventEmitter();
+  @Output() public changeListToItem = new EventEmitter();
   public isEditMod: boolean = false;
   public titleToEdit: string = '';
 
@@ -83,6 +86,7 @@ export class ListComponent extends Base implements OnInit {
     this.isEditMod = false;
 
     const list = new ListCreate();
+    this.titleToEdit = new CapitalizePipe().transform(this.titleToEdit);
     list.title = this.titleToEdit;
 
     this.listHttp.editList(list, this.list.id)
@@ -94,7 +98,7 @@ export class ListComponent extends Base implements OnInit {
   }
 
   public cancelEdit(): void {
-    this.titleToEdit = this.list.title;
+    if (this.isEditMod) this.titleToEdit = this.list.title;
     this.isEditMod = false;
   }
 
@@ -102,6 +106,13 @@ export class ListComponent extends Base implements OnInit {
     if (this.list.id >= 0) {
       this.openList.emit(this.list.id);
     }
+  }
+
+  public onChangeListToItem(event: DropEvent): void {
+    this.changeListToItem.emit({
+      item: event.dragData,
+      droppableListId: this.list.id,
+    });
   }
 
   ngOnInit() {
