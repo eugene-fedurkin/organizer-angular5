@@ -4,10 +4,11 @@
 .container {
   display: grid;
   position: relative;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 200px 60px;
   background: rgba(255,255,255,0.15);
+  border: 2px solid rgba(0, 0, 0, 0);
   border-radius: 6px;
-  padding: 10px 15px;
+  padding: 8px 15px;
   color: #FAEFD4;
   margin: 6px 0px;
   transition: all 0.2s linear;
@@ -30,6 +31,7 @@
 div.cntr {
   position: relative;
   justify-self: end;
+  align-self: center;
   width: 20px;
 }
 input {

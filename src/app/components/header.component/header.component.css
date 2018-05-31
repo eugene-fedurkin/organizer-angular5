@@ -30,3 +30,18 @@ img.expand {
 img.expand.active {
   transform: rotateZ(0);
 }
+
+text {
+  font-family: 'Pacifico', cursive;
+  stroke: #FAEFD4;
+  stroke-dasharray: 150;
+  animation: strokeFade 120s cubic-bezier(0, 0.32, 1, 1) 5s infinite;
+}
+
+@keyframes strokeFade {
+  0% { stroke-dasharray: 150; }
+  8% { stroke-dasharray: 30; }
+  9%, 100%  {
+    stroke-dasharray: 0;
+  }
+}

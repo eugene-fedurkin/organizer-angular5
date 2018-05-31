@@ -6,9 +6,10 @@
   background: rgba(255,255,255,0.15);
   color: #FAEFD4;
   border-radius: 6px;
+  border: 2px solid rgba(0, 0, 0, 0);
   display: flex;
   justify-content: space-between;
-  height: 32px;
+  height: 28px;
   cursor: pointer;
   align-items: center;
   transition: transform .2s ease-in-out;
