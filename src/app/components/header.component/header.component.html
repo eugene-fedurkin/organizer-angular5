@@ -1,44 +1,8 @@
 <header>
   <div class="container">
-
-
-
-<svg width="200" height="52">
+  <svg width="200" height="52">
     <text x="15" y="38" fill="none" stroke="#FAEFD4" id="text-logo" stroke-width="1" font-size="25">ORGANIZER</text>
   </svg>
-      <!-- <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="140px" height="100%">
-        <rect x="0" y="0" width="100%" height="100%" />
-        <text x="50%" text-anchor="middle" y="50%" dy="0.4em" fill="url(#pattern)" font-family="Quicksand" font-size="21px">Organizer</text>
-        
-        <defs>  
-          <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0">
-            <stop offset="0%" style="stop-color:#ddc5a2;"/>
-            <stop offset="38%" style="stop-color:#ddc5a2;"/>
-            <stop offset="48%" style="stop-color:#8f8585;"/>
-            <stop offset="51%" style="stop-color:#301b28;"/>
-            <stop offset="54%" style="stop-color:#8f8585;"/>
-            <stop offset="64%" style="stop-color:#ddc5a2;"/>
-            <stop offset="100%" style="stop-color:#ddc5a2;"/>
-          </linearGradient>
-
-          <pattern id="pattern" x="0" y="0" width="300%" height="100%" patternUnits="userSpaceOnUse">
-            <rect x="0" y="0" width="150%" height="100%" fill="url(#gradient)">
-              <animate attributeType="XML"
-                       attributeName="x"
-                       from="0" to="150%"
-                       dur="7s"
-                       repeatCount="indefinite"/>
-            </rect>
-            <rect x="-150%" y="0" width="150%" height="100%" fill="url(#gradient)">
-              <animate attributeType="XML"
-                       attributeName="x"
-                       from="-150%" to="0"
-                       dur="7s"
-                       repeatCount="indefinite"/>
-            </rect>
-          </pattern>
-        </defs>
-      </svg> -->
     <div *ngIf="userName" class="userInfo">
       <span>
         {{userName}}
@@ -46,7 +10,7 @@
       <span>
         <img class="user" src="../../../assets/user.svg" alt="user" />
         <img (click)="toggleWindow()"  class="expand" [class.active]="isOpenWindow" src="../../../assets/expand-button.svg" alt="btn" />
-        <app-setting-window [isOpenWindow]="isOpenWindow" (close)="toggleWindow()"></app-setting-window>
+        <app-setting-window [isOpenWindow]="isOpenWindow" (close)="toggleWindow()" (openSitting)="openSetting()" (confirmSignOut)="confirmSignOut()"></app-setting-window>
       </span>
     </div>
   </div>

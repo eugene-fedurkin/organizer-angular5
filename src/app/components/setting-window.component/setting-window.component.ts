@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { staggerSetting } from '../../animations/stagget-setting';
@@ -12,19 +12,15 @@ import { Base } from '../base.component';
   templateUrl: './setting-window.component.html',
   styleUrls: ['./setting-window.component.css'],
   animations: [ staggerSetting() ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SettingWindowComponent extends Base {
+export class SettingWindowComponent {
 
   @Input() public isOpenWindow;
   @Output() public close = new EventEmitter();
+  @Output() public confirmSignOut = new EventEmitter();
+  @Output() public openSitting = new EventEmitter();
   public options: string[] = ['Profile', 'Setting', 'Sign out'];
-
-  public constructor(
-    private modal: ModalService,
-    private router: Router,
-    private http: IUserHttpService,
-    private store: Store,
-  ) { super(); }
 
   public openProfile(): void {
     // TODO: open profile
@@ -32,33 +28,16 @@ export class SettingWindowComponent extends Base {
     console.log('openProfile');
   }
 
-  public openSetting(): void {
+  public onOpenSetting(): void {
     // TODO: open setting
     this.close.emit();
+    this.openSitting.emit();
     console.log('openSetting');
   }
 
-  public confirmSignOut(): void {
+  public onConfirmSignOut(): void {
     this.closeWindow();
-    const message = 'Are you sure that you want to sign out?';
-
-    const sub = this.modal.open(message)
-      .subscribe(result => {
-        if (result) {
-          this.handler();
-        }
-        sub.unsubscribe();
-    });
-  }
-
-  private handler(): void {
-    this.http.signOut()
-      .takeUntil(this.componentDestroyed)
-      .subscribe(resp => {
-        this.store.removeUser();
-        this.router.navigate(['./auth']);
-      },
-    error => console.log('Server isnt access right now'));
+    this.confirmSignOut.emit();
   }
 
   public closeWindow(): void {

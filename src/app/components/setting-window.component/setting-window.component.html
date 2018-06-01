@@ -5,7 +5,7 @@
       (click)="option === 'Profile'
         ? openProfile()
         : option === 'Setting'
-        ? openSetting()
-        : confirmSignOut()">{{ option }}</li>
+        ? onOpenSetting()
+        : onConfirmSignOut()">{{ option }}</li>
   </ul>
 </div>
